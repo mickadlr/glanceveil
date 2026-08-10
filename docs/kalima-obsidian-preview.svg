@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Kalima Obsidian preview</title>
+  <desc id="desc">A note excerpt shown first as ordinary Latin text and then veiled with Greek-looking glyphs.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#17131f"/>
+      <stop offset="1" stop-color="#28203a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#08060c" flood-opacity=".42"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="520" rx="36" fill="url(#background)"/>
+  <circle cx="1110" cy="82" r="170" fill="#7c5cff" opacity=".12"/>
+  <circle cx="80" cy="490" r="210" fill="#bc8cff" opacity=".08"/>
+  <text x="72" y="84" fill="#c9b7ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="700" letter-spacing="3">KALIMA FOR OBSIDIAN</text>
+  <text x="72" y="132" fill="#f4efff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="620">Your Markdown stays unchanged.</text>
+  <g filter="url(#shadow)">
+    <rect x="72" y="174" width="1056" height="268" rx="24" fill="#211b2d" stroke="#57466f"/>
+    <rect x="72" y="174" width="1056" height="54" rx="24" fill="#2c243b"/>
+    <circle cx="106" cy="201" r="7" fill="#ff7f8e"/>
+    <circle cx="130" cy="201" r="7" fill="#f3c969"/>
+    <circle cx="154" cy="201" r="7" fill="#75d69c"/>
+    <text x="190" y="210" fill="#b9abc9" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18">private-note.md</text>
+    <text x="110" y="286" fill="#9d8ead" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="650" letter-spacing="1.5">SOURCE</text>
+    <text x="110" y="330" fill="#d8d0e2" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="31">Private notes stay readable to you</text>
+    <line x1="110" x2="1090" y1="354" y2="354" stroke="#493b5d"/>
+    <text x="110" y="394" fill="#bca5ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="650" letter-spacing="1.5">VEILED DISPLAY</text>
+    <text x="350" y="398" fill="#f2edfa" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="31">Πριβατε νοτεσ σταγ ρεαδαμπλε το γου</text>
+  </g>
+  <text x="72" y="486" fill="#a99ab9" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="20">Live Preview · Source mode · Reading view · Desktop and mobile</text>
+</svg>

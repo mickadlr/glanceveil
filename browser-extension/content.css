@@ -1,0 +1,97 @@
+[data-gv-overlay-part] {
+  position: relative !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
+[data-gv-overlay-part]::after {
+  content: attr(data-gv-rendered);
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  color: var(--gv-ink, #222);
+  -webkit-text-fill-color: var(--gv-ink, #222);
+  font: inherit;
+  font-size: calc(1em * var(--greek-veil-scale, 1));
+  letter-spacing: var(--greek-veil-letter-spacing, inherit);
+  line-height: inherit;
+  white-space: pre;
+  direction: ltr;
+  unicode-bidi: isolate-override;
+  pointer-events: none;
+}
+
+[data-gv-overlay-part].gv-lens-reveal,
+[data-gv-overlay-part].gv-learning-hint {
+  color: var(--gv-ink, #222) !important;
+  -webkit-text-fill-color: var(--gv-ink, #222) !important;
+}
+
+[data-gv-overlay-part].gv-lens-reveal::after,
+[data-gv-overlay-part].gv-learning-hint::after {
+  opacity: 0 !important;
+}
+
+[data-gv-overlay-part].gv-stroke::after {
+  content: none !important;
+}
+
+[data-gv-stroke-svg] {
+  position: absolute;
+  inset-inline-start: 0;
+  top: .08em;
+  width: 100%;
+  height: .94em;
+  overflow: visible;
+  color: var(--gv-ink, #222);
+  pointer-events: none;
+}
+
+[data-gv-overlay-part].gv-lens-reveal > [data-gv-stroke-svg],
+[data-gv-overlay-part].gv-learning-hint > [data-gv-stroke-svg] {
+  opacity: 0 !important;
+}
+
+.gv-input-source-hidden {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  caret-color: var(--gv-input-caret, currentColor) !important;
+}
+
+.gv-input-source-hidden[contenteditable],
+.gv-input-source-hidden[contenteditable] * {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
+.gv-input-source-hidden[contenteditable] {
+  caret-color: var(--gv-input-caret, currentColor) !important;
+}
+
+[data-gv-input-mirror] {
+  position: fixed !important;
+  z-index: 2147483646 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  color: var(--gv-input-ink, #222) !important;
+  -webkit-text-fill-color: var(--gv-input-ink, #222) !important;
+  text-shadow: none !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+[data-gv-input-word] {
+  direction: ltr;
+  unicode-bidi: isolate-override;
+}
+
+[data-gv-input-word].gv-stroke {
+  position: relative;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}

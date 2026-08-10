@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <defs>
+    <linearGradient id="desk" x1="80" y1="10" x2="1200" y2="790" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#eee9fa"/>
+      <stop offset="1" stop-color="#d8cdef"/>
+    </linearGradient>
+    <linearGradient id="header" x1="878" y1="104" x2="1194" y2="190" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#faf8ff"/>
+      <stop offset="1" stop-color="#eee7ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#241842" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="800" fill="url(#desk)"/>
+  <circle cx="1158" cy="50" r="210" fill="#795bc7" opacity=".08"/>
+  <circle cx="75" cy="760" r="260" fill="#fff" opacity=".24"/>
+
+  <g filter="url(#shadow)">
+    <rect x="48" y="42" width="1184" height="714" rx="22" fill="#fff"/>
+    <path d="M70 42h1140a22 22 0 0 1 22 22v42H48V64a22 22 0 0 1 22-22Z" fill="#2a203f"/>
+    <circle cx="80" cy="74" r="7" fill="#ff7f8e"/>
+    <circle cx="104" cy="74" r="7" fill="#f3c969"/>
+    <circle cx="128" cy="74" r="7" fill="#75d69c"/>
+    <rect x="178" y="57" width="696" height="35" rx="10" fill="#3b304f"/>
+    <text x="202" y="80" fill="#cfc5dc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14">workspace.example / project-notes</text>
+    <rect x="48" y="106" width="214" height="650" fill="#f7f4fb"/>
+    <line x1="262" y1="106" x2="262" y2="756" stroke="#e2dceb"/>
+    <text x="82" y="154" fill="#5e3fb0" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="800" letter-spacing="1.5">WORKSPACE</text>
+    <rect x="72" y="181" width="166" height="42" rx="9" fill="#e9e1f7"/>
+    <text x="91" y="207" fill="#2b2140" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="15" font-weight="700">Project notes</text>
+    <text x="91" y="258" fill="#7a7188" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14">Launch checklist</text>
+    <text x="91" y="299" fill="#7a7188" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14">Meeting notes</text>
+    <text x="91" y="340" fill="#7a7188" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="14">Research</text>
+
+    <text x="314" y="166" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="31" font-weight="760">Προτζεκτ νοτεσ φορ Μονδαγ</text>
+    <text x="314" y="196" fill="#81778e" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="13">Kalima is active · Greek Dense · Unicode</text>
+    <rect x="314" y="229" width="514" height="108" rx="15" fill="#f5f1fb" stroke="#e2daef"/>
+    <circle cx="344" cy="259" r="13" fill="#5e3fb0"/>
+    <text x="370" y="263" fill="#5f566c" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="750">YOU</text>
+    <text x="338" y="302" fill="#2b2437" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="19">Ρεβιεω θε λαυνχ χεκκλιστ μπεφορε λυνχ.</text>
+    <rect x="362" y="357" width="466" height="128" rx="15" fill="#2a203f"/>
+    <text x="388" y="391" fill="#cdbef4" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="750">ASSISTANT</text>
+    <text x="388" y="430" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18">θε κλιεντ μεετιγγ σταρτσ ατ τεν θιρτγ.</text>
+    <text x="388" y="460" fill="#ded5ed" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18">Πλαν θε ρελεασε ανδ σχαρε θε δραφτ.</text>
+    <rect x="314" y="526" width="514" height="69" rx="14" fill="#fff" stroke="#d7cde7" stroke-width="2"/>
+    <text x="338" y="568" fill="#31283d" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="17">Πριβατε ωορκσπακε <tspan fill="#8d8299">notes</tspan></text>
+    <rect x="314" y="626" width="420" height="70" rx="12" fill="#faf8fd" stroke="#e4deec"/>
+    <text x="338" y="654" fill="#7d7389" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700">HOLD OPTION TO PEEK LOCALLY</text>
+    <text x="338" y="681" fill="#342b40" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="16">Your source text and interactions remain available.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="866" y="91" width="342" height="638" rx="18" fill="#fff"/>
+    <path d="M884 91h306a18 18 0 0 1 18 18v76H866v-76a18 18 0 0 1 18-18Z" fill="url(#header)"/>
+    <rect x="884" y="112" width="42" height="42" rx="11" fill="#5e3fb0"/>
+    <path d="M894 122v22M895 133l10-11M896 133l11 12M908 145l6-20 7 20" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="938" y="120" fill="#5e3fb0" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="9" font-weight="800" letter-spacing="1.2">CASUAL VISUAL PRIVACY</text>
+    <text x="938" y="149" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="27" font-weight="760">Ka<tspan fill="#5e3fb0">λ</tspan>ima</text>
+    <circle cx="1180" cy="132" r="6" fill="#2a865f"/>
+    <text x="884" y="215" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="750">Active on this page</text>
+    <text x="1178" y="215" text-anchor="end" fill="#6e6681" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12">tab</text>
+    <rect x="884" y="232" width="306" height="42" rx="9" fill="#5e3fb0"/>
+    <text x="1037" y="258" text-anchor="middle" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="750">Turn off for this tab</text>
+    <rect x="884" y="285" width="149" height="36" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <rect x="1041" y="285" width="149" height="36" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <text x="958" y="308" text-anchor="middle" fill="#332a43" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11">Peek selected text</text>
+    <text x="1116" y="308" text-anchor="middle" fill="#332a43" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11">Use saved rule</text>
+    <text x="884" y="356" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="750">Appearance for this tab</text>
+    <text x="884" y="382" fill="#6e6681" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">SCRIPT</text>
+    <rect x="884" y="390" width="306" height="37" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <text x="898" y="414" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12">Greek</text>
+    <text x="1171" y="414" fill="#6e6681" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12">⌄</text>
+    <text x="884" y="454" fill="#6e6681" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">STRENGTH</text>
+    <text x="1041" y="454" fill="#6e6681" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">RENDERING</text>
+    <rect x="884" y="462" width="149" height="37" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <rect x="1041" y="462" width="149" height="37" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <text x="898" y="486" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12">Dense</text>
+    <text x="1055" y="486" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12">Unicode text</text>
+    <text x="884" y="530" fill="#6e6681" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700">KEEP SOME WORDS VISIBLE</text>
+    <line x1="888" y1="555" x2="1160" y2="555" stroke="#d7cee8" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="888" cy="555" r="8" fill="#5e3fb0"/>
+    <text x="1190" y="559" text-anchor="end" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12">0%</text>
+    <text x="884" y="588" fill="#6e6681" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10">Visible words can be read by anyone looking at the page.</text>
+    <line x1="884" y1="614" x2="1190" y2="614" stroke="#e6e0ee"/>
+    <text x="884" y="642" fill="#211b35" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="750">Remember for this site</text>
+    <rect x="884" y="655" width="97" height="36" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <rect x="989" y="655" width="97" height="36" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <rect x="1094" y="655" width="96" height="36" rx="8" fill="#fff" stroke="#ddd5ee"/>
+    <text x="932" y="678" text-anchor="middle" fill="#332a43" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10">Always veil</text>
+    <text x="1037" y="678" text-anchor="middle" fill="#332a43" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10">Never veil</text>
+    <text x="1142" y="678" text-anchor="middle" fill="#332a43" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10">Clear</text>
+  </g>
+</svg>

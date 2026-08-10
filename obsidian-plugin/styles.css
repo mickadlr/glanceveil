@@ -1,0 +1,95 @@
+.gv-obsidian-ribbon {
+  touch-action: manipulation;
+}
+
+.gv-obsidian-ribbon-off {
+  opacity: 0.55;
+}
+
+.gv-obsidian-status {
+  cursor: pointer;
+}
+
+.gv-obsidian-status-hidden {
+  display: none;
+}
+
+.gv-obsidian-status-off {
+  color: var(--text-muted);
+}
+
+.gv-obsidian-cm-overlay,
+.gv-obsidian-reading-word.gv-obsidian-overlay,
+.gv-obsidian-reading-word.gv-obsidian-strokes {
+  position: relative;
+  color: transparent;
+}
+
+.gv-obsidian-cm-overlay::after,
+.gv-obsidian-reading-word.gv-obsidian-overlay::after {
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--text-normal);
+  content: attr(data-gv-rendered);
+  direction: ltr;
+  font-size: calc(1em * var(--gv-obsidian-scale, 1));
+  letter-spacing: var(--gv-obsidian-spacing, 0);
+  pointer-events: none;
+  unicode-bidi: isolate-override;
+  white-space: pre;
+}
+
+.gv-obsidian-cm-unicode,
+.gv-obsidian-reading-word.gv-obsidian-unicode {
+  direction: ltr;
+  font-size: calc(1em * var(--gv-obsidian-scale, 1));
+  letter-spacing: var(--gv-obsidian-spacing, 0);
+  unicode-bidi: isolate;
+}
+
+.gv-obsidian-cm-stroke,
+.gv-obsidian-reading-word.gv-obsidian-strokes {
+  display: inline-block;
+  min-width: 0.7em;
+  position: relative;
+  vertical-align: -0.12em;
+}
+
+.gv-obsidian-cm-stroke svg,
+.gv-obsidian-reading-word.gv-obsidian-strokes svg {
+  display: block;
+  fill: none;
+  overflow: visible;
+  stroke: var(--text-normal);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gv-obsidian-reading-word.gv-obsidian-strokes svg {
+  inset-inline-start: 0;
+  position: absolute;
+  top: 0.08em;
+}
+
+.gv-obsidian-reading-word.gv-obsidian-overlay.gv-obsidian-peek,
+.gv-obsidian-reading-word.gv-obsidian-strokes.gv-obsidian-peek {
+  color: inherit;
+}
+
+.gv-obsidian-reading-word.gv-obsidian-overlay.gv-obsidian-peek::after,
+.gv-obsidian-reading-word.gv-obsidian-strokes.gv-obsidian-peek svg {
+  display: none;
+}
+
+.gv-obsidian-reading-word.gv-obsidian-unicode.gv-obsidian-peek {
+  color: transparent;
+  position: relative;
+}
+
+.gv-obsidian-reading-word.gv-obsidian-unicode.gv-obsidian-peek::after {
+  color: var(--text-normal);
+  content: attr(data-gv-original);
+  inset-inline-start: 0;
+  position: absolute;
+  white-space: pre;
+}

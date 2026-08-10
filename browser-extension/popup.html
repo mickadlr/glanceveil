@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalima</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img class="brand-mark" src="assets/kalima-mark.svg" alt="">
+    <div class="brand-copy">
+      <p class="eyebrow">CASUAL VISUAL PRIVACY</p>
+      <h1 aria-label="Kalima">Ka<span aria-hidden="true">λ</span>ima</h1>
+    </div>
+    <span id="stateDot" class="state-dot" aria-hidden="true"></span>
+  </header>
+
+  <main>
+    <section class="status-card" aria-live="polite">
+      <strong id="status">Checking this page…</strong>
+      <span id="scope"></span>
+    </section>
+
+    <button id="toggleTab" class="primary" type="button">Toggle this tab</button>
+
+    <div class="quick-grid">
+      <button id="peekSelection" type="button">Peek selected text</button>
+      <button id="clearTab" type="button">Use saved rule</button>
+    </div>
+
+    <section>
+      <h2>Appearance for this tab</h2>
+      <label>
+        Script
+        <select id="pack"></select>
+      </label>
+      <div class="two-column">
+        <label>
+          Strength
+          <select id="profile"></select>
+        </label>
+        <label>
+          Rendering
+          <select id="renderer"></select>
+        </label>
+      </div>
+      <label class="clear-words">
+        Keep some words visible
+        <span class="range-row">
+          <input id="clearWordFraction" type="range" min="0" max="0.5" step="0.05">
+          <output id="clearWordValue" for="clearWordFraction">0%</output>
+        </span>
+      </label>
+      <p class="note">Visible words can be read by anyone looking at the page.</p>
+      <p id="packNote" class="note"></p>
+    </section>
+
+    <section>
+      <h2>Remember for this site</h2>
+      <div class="site-actions">
+        <button id="siteOn" type="button">Always veil</button>
+        <button id="siteOff" type="button">Never veil</button>
+        <button id="clearSite" type="button">Clear</button>
+      </div>
+    </section>
+
+    <details>
+      <summary>Compatibility details</summary>
+      <pre id="diagnostics">Open to inspect this page.</pre>
+    </details>
+  </main>
+
+  <footer>
+    <span>Hold <kbd>Alt</kbd>/<kbd>Option</kbd> to peek at the block under the pointer.</span>
+    <button id="settings" class="link-button" type="button">Settings</button>
+  </footer>
+
+  <script src="shared/core.js"></script>
+  <script src="shared/state.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+#!/usr/bin/env node
+"use strict";
+
+const { execFile } = require("node:child_process");
+const {
+  createTerminalTransformer,
+  truncateToColumns
+} = require("../lib/terminal.js");
+
+const sourcePane = String(process.env.KALIMA_SOURCE_PANE || "");
+const terminalOptions = {
+  packId: process.env.KALIMA_PACK,
+  profileId: process.env.KALIMA_PROFILE,
+  clearWordFraction: process.env.KALIMA_CLEAR_WORDS,
+  variationSeed: process.env.KALIMA_VARIATION_SEED,
+  refreshMs: process.env.KALIMA_REFRESH_MS
+};
+
+let transformer;
+try {
+  if (!/^%\d+$/.test(sourcePane)) {
+    throw new Error("The source tmux pane was not specified.");
+  }
+  transformer = createTerminalTransformer(terminalOptions);
+} catch (error) {
+  process.stderr.write(`Kalima: ${error.message}\n`);
+  process.exit(2);
+}
+
+let stopped = false;
+let captureRunning = false;
+let timer = null;
+let lastFrame = null;
+let paused = false;
+let forwarding = false;
+let revealPending = false;
+let revealTimer = null;
+let inputModeSyncRunning = false;
+let lastInputModeSyncAt = 0;
+let inputModeSignature = "";
+const inputQueue = [];
+const INPUT_BATCH_SIZE = 512;
+const REVEAL_CHORD_BYTE = 0x07;
+const REVEAL_CHORD_TIMEOUT_MS = 450;
+const INPUT_MODE_SYNC_INTERVAL_MS = 1000;
+const INPUT_MODE_FORMAT = [
+  "#{keypad_cursor_flag}",
+  "#{keypad_flag}",
+  "#{mouse_standard_flag}",
+  "#{mouse_button_flag}",
+  "#{mouse_all_flag}",
+  "#{mouse_sgr_flag}",
+  "#{mouse_utf8_flag}"
+].join(":");
+
+function writeFrame(source) {
+  const columns = Math.max(1, Number(process.stdout.columns) || 80);
+  const rows = Math.max(1, Number(process.stdout.rows) || 24);
+  // capture-pane prints one final record separator after the last terminal
+  // row. Remove that separator before limiting rows so a full-height capture
+  // does not accidentally discard its first visible line.
+  const sourceLines = String(source)
+    .replace(/\r/g, "")
+    .replace(/\n$/, "")
+    .split("\n")
+    .slice(-rows);
+  const rendered = transformer.transform(sourceLines.join("\n"));
+  const fitted = rendered
+    .split("\n")
+    .slice(-rows)
+    .map((line) => truncateToColumns(line, columns))
+    .join("\n");
+  if (fitted === lastFrame) return;
+  lastFrame = fitted;
+  process.stdout.write(`\u001b[0m\u001b[H\u001b[2J${fitted}`);
+}
+
+function showFailure(message) {
+  const detail = String(message || "Unable to capture the source pane.")
+    .replace(/\s+/g, " ")
+    .slice(0, 240);
+  writeFrame(`Kalima tmux view stopped.\n\n${detail}\n\nPress Ctrl-G twice to reveal the source.`);
+}
+
+function applyInputModes(signature) {
+  if (signature === inputModeSignature) return;
+  inputModeSignature = signature;
+  const [
+    cursorKeys,
+    keypad,
+    mouseStandard,
+    mouseButton,
+    mouseAll,
+    mouseSgr,
+    mouseUtf8
+  ] = signature.split(":").map((value) => value === "1");
+  const sequences = [
+    cursorKeys ? "\u001b[?1h" : "\u001b[?1l",
+    keypad ? "\u001b=" : "\u001b>",
+    "\u001b[?1000l\u001b[?1002l\u001b[?1003l\u001b[?1005l\u001b[?1006l"
+  ];
+  if (mouseStandard) sequences.push("\u001b[?1000h");
+  if (mouseButton) sequences.push("\u001b[?1002h");
+  if (mouseAll) sequences.push("\u001b[?1003h");
+  if (mouseUtf8) sequences.push("\u001b[?1005h");
+  if (mouseSgr) sequences.push("\u001b[?1006h");
+  process.stdout.write(sequences.join(""));
+}
+
+function syncSourceInputModes(force = false) {
+  const now = Date.now();
+  if (stopped || inputModeSyncRunning ||
+      (!force && now - lastInputModeSyncAt < INPUT_MODE_SYNC_INTERVAL_MS)) {
+    return;
+  }
+  inputModeSyncRunning = true;
+  lastInputModeSyncAt = now;
+  execFile(
+    "tmux",
+    ["display-message", "-p", "-t", sourcePane, INPUT_MODE_FORMAT],
+    { encoding: "utf8", maxBuffer: 1024 },
+    (error, stdout) => {
+      inputModeSyncRunning = false;
+      if (stopped || error) return;
+      const signature = stdout.trim();
+      if (/^[01](?::[01]){6}$/.test(signature)) applyInputModes(signature);
+    }
+  );
+}
+
+function capture() {
+  if (stopped || paused || captureRunning) return;
+  syncSourceInputModes();
+  captureRunning = true;
+  execFile(
+    "tmux",
+    ["capture-pane", "-p", "-e", "-J", "-t", sourcePane],
+    { encoding: "utf8", maxBuffer: 4 * 1024 * 1024 },
+    (error, stdout) => {
+      captureRunning = false;
+      if (stopped) return;
+      if (error) {
+        paused = true;
+        showFailure(error.message);
+        return;
+      }
+      writeFrame(stdout);
+    }
+  );
+}
+
+function schedule() {
+  clearInterval(timer);
+  timer = setInterval(capture, transformer.options.refreshMs);
+  timer.unref?.();
+}
+
+function drainInputQueue() {
+  if (stopped || forwarding || !inputQueue.length) return;
+  forwarding = true;
+  const bytes = inputQueue.shift();
+  execFile(
+    "tmux",
+    [
+      "send-keys", "-H", "-t", sourcePane,
+      ...[...bytes].map((byte) => byte.toString(16).padStart(2, "0"))
+    ],
+    { encoding: "utf8", maxBuffer: 1024 * 1024 },
+    (error) => {
+      forwarding = false;
+      if (stopped) return;
+      if (error) {
+        inputQueue.length = 0;
+        paused = true;
+        showFailure(error.message);
+        return;
+      }
+      drainInputQueue();
+      capture();
+    }
+  );
+}
+
+function forwardInput(bytes) {
+  for (let offset = 0; offset < bytes.length; offset += INPUT_BATCH_SIZE) {
+    inputQueue.push(bytes.subarray(offset, offset + INPUT_BATCH_SIZE));
+  }
+  drainInputQueue();
+}
+
+function forwardPendingRevealChord() {
+  if (!revealPending || stopped) return;
+  revealPending = false;
+  revealTimer = null;
+  forwardInput(Buffer.from([REVEAL_CHORD_BYTE]));
+}
+
+function handleInput(chunk) {
+  const forwarded = [];
+  for (const byte of chunk) {
+    if (revealPending) {
+      clearTimeout(revealTimer);
+      revealTimer = null;
+      revealPending = false;
+      if (byte === REVEAL_CHORD_BYTE) {
+        cleanup(0);
+        return;
+      }
+      forwarded.push(REVEAL_CHORD_BYTE);
+    }
+    if (byte === REVEAL_CHORD_BYTE) {
+      revealPending = true;
+      revealTimer = setTimeout(forwardPendingRevealChord, REVEAL_CHORD_TIMEOUT_MS);
+      continue;
+    }
+    forwarded.push(byte);
+  }
+  if (forwarded.length) forwardInput(Buffer.from(forwarded));
+}
+
+function cleanup(exitCode = 0) {
+  if (stopped) return;
+  stopped = true;
+  clearInterval(timer);
+  clearTimeout(revealTimer);
+  inputQueue.length = 0;
+  process.stdout.write(
+    "\u001b[?1l\u001b>\u001b[?1000l\u001b[?1002l\u001b[?1003l" +
+    "\u001b[?1005l\u001b[?1006l\u001b[?25h\u001b[0m"
+  );
+  if (process.stdin.isTTY) process.stdin.setRawMode(false);
+  process.exit(exitCode);
+}
+
+process.on("SIGINT", () => cleanup(0));
+process.on("SIGTERM", () => cleanup(0));
+process.on("SIGHUP", () => cleanup(0));
+process.on("SIGWINCH", () => {
+  lastFrame = null;
+  capture();
+});
+process.on("exit", () => {
+  process.stdout.write(
+    "\u001b[?1l\u001b>\u001b[?1000l\u001b[?1002l\u001b[?1003l" +
+    "\u001b[?1005l\u001b[?1006l\u001b[?25h\u001b[0m"
+  );
+});
+
+if (process.stdin.isTTY) {
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.on("data", handleInput);
+}
+
+process.stdout.write("\u001b[?25l");
+syncSourceInputModes(true);
+capture();
+schedule();

@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+"use strict";
+
+const {
+  createTerminalTransformer
+} = require("../lib/terminal.js");
+
+function usage() {
+  return [
+    "Usage: kalima-filter [--pack greek] [--profile dense]",
+    "                     [--clear-words 0..0.5] [--variation-seed integer]",
+    "",
+    "Transforms piped terminal text while preserving ANSI control sequences."
+  ].join("\n");
+}
+
+function parseArguments(arguments_) {
+  const options = {};
+  for (let index = 0; index < arguments_.length; index += 1) {
+    const argument = arguments_[index];
+    if (argument === "--help" || argument === "-h") return { help: true };
+    const value = arguments_[index + 1];
+    if (value === undefined) throw new Error(`Missing value for ${argument}.`);
+    if (argument === "--pack") options.packId = value;
+    else if (argument === "--profile") options.profileId = value;
+    else if (argument === "--clear-words") options.clearWordFraction = value;
+    else if (argument === "--variation-seed") options.variationSeed = value;
+    else throw new Error(`Unknown option ${argument}.`);
+    index += 1;
+  }
+  return { options };
+}
+
+async function main() {
+  let parsed;
+  try {
+    parsed = parseArguments(process.argv.slice(2));
+  } catch (error) {
+    process.stderr.write(`kalima-filter: ${error.message}\n\n${usage()}\n`);
+    process.exitCode = 2;
+    return;
+  }
+  if (parsed.help) {
+    process.stdout.write(`${usage()}\n`);
+    return;
+  }
+
+  let transformer;
+  try {
+    transformer = createTerminalTransformer(parsed.options);
+  } catch (error) {
+    process.stderr.write(`kalima-filter: ${error.message}\n`);
+    process.exitCode = 2;
+    return;
+  }
+
+  process.stdin.setEncoding("utf8");
+  let input = "";
+  for await (const chunk of process.stdin) input += chunk;
+  process.stdout.write(transformer.transform(input));
+}
+
+main().catch((error) => {
+  process.stderr.write(`kalima-filter: ${error.message}\n`);
+  process.exitCode = 1;
+});

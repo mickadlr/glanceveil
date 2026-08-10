@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.beads/
+*.log
+obsidian-plugin/main.js
+obsidian-plugin/data.json
+.DS_Store
+*.swp
+*.tmp

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Kalima</title>
+  <desc id="desc">A K and Greek lambda beneath a translucent veil.</desc>
+  <defs>
+    <linearGradient id="bg" x1="16" y1="12" x2="112" y2="116" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#241842"/>
+      <stop offset="1" stop-color="#5e3fb0"/>
+    </linearGradient>
+    <linearGradient id="veil" x1="58" y1="17" x2="101" y2="107" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#efe9ff" stop-opacity=".68"/>
+      <stop offset="1" stop-color="#c8b8f7" stop-opacity=".12"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="29" fill="url(#bg)"/>
+  <path d="M18 25C45 9 79 12 110 30L96 108C69 93 43 91 18 104Z" fill="url(#veil)"/>
+  <path d="M33 37v54M35 66l25-29M36 65l27 27" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M74 91l15-48 18 48" fill="none" stroke="#d9ccff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

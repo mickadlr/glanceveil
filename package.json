@@ -1,0 +1,39 @@
+{
+  "name": "kalima",
+  "version": "2.2.1",
+  "private": true,
+  "description": "Kalima, a familiar-script privacy veil for webpages, Obsidian notes, and tmux panes.",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mickadlr/kalima.git"
+  },
+  "homepage": "https://github.com/mickadlr/kalima#readme",
+  "bugs": {
+    "url": "https://github.com/mickadlr/kalima/issues"
+  },
+  "scripts": {
+    "build:extension": "node scripts/build-extension.mjs",
+    "check:extension-bundles": "node scripts/build-extension.mjs --check",
+    "package:chrome": "npm run build:extension && node scripts/package-chrome.mjs",
+    "package:tmux": "node scripts/package-tmux.mjs",
+    "package:release": "npm run package:chrome && npm run package:obsidian && npm run package:tmux",
+    "check:packages": "node scripts/package-chrome.mjs --verify && node scripts/package-tmux.mjs --verify",
+    "test": "node --test tests/*.test.js",
+    "test:extension": "node tests/extension-smoke.mjs",
+    "build:obsidian": "tsc -p obsidian-plugin/tsconfig.json && node obsidian-plugin/esbuild.config.mjs --production",
+    "package:obsidian": "npm run build:obsidian && node scripts/package-obsidian.mjs",
+    "dev:obsidian": "node obsidian-plugin/esbuild.config.mjs",
+    "check:obsidian": "tsc -p obsidian-plugin/tsconfig.json",
+    "check": "npm run check:extension-bundles && npm run check:packages && node --check browser-extension/content-bundle.js && node --check browser-extension/google-docs-bundle.js && node --check browser-extension/shared/core.js && node --check browser-extension/shared/state.js && node --check browser-extension/shared/gregg.js && node --check browser-extension/google-docs-main.js && node --check browser-extension/content.js && node --check browser-extension/background.js && node --check browser-extension/popup.js && node --check browser-extension/options.js && node --check scripts/lib/release-archive.mjs && node --check scripts/package-chrome.mjs && node --check scripts/package-tmux.mjs && node --check tmux-plugin/lib/terminal.js && node --check tmux-plugin/bin/kalima-filter && node --check tmux-plugin/bin/kalima-setup && node --check tmux-plugin/bin/kalima-view && sh -n kalima.tmux tmux-plugin/kalima.tmux tmux-plugin/bin/open-setup tmux-plugin/bin/open-view && node --check tests/extension-smoke.mjs && npm run check:obsidian"
+  },
+  "devDependencies": {
+    "@codemirror/language": "^6.11.3",
+    "@codemirror/state": "6.5.0",
+    "@codemirror/view": "6.38.6",
+    "@types/node": "^22.15.17",
+    "esbuild": "0.25.5",
+    "obsidian": "latest",
+    "typescript": "^5.8.3"
+  }
+}

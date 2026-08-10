@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalima settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header>
+    <div class="header-lockup">
+      <img src="assets/kalima-mark.svg" alt="">
+      <div>
+        <p class="eyebrow">READABLE TO YOU · OPAQUE AT A GLANCE</p>
+        <h1><span class="wordmark" aria-label="Kalima">Ka<span aria-hidden="true">λ</span>ima</span> settings</h1>
+        <p>A shoulder-surfing filter—not encryption.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="onboarding" class="onboarding" hidden aria-labelledby="onboardingTitle">
+      <ol class="setup-progress" aria-label="Setup steps">
+        <li><span>1</span> Choose a script</li>
+        <li><span>2</span> Try the veil</li>
+        <li><span>3</span> Choose where it runs</li>
+      </ol>
+      <p class="eyebrow">WELCOME TO KALIMA</p>
+      <h2 id="onboardingTitle">Set up your reading veil</h2>
+      <p>This takes about a minute. Kalima discourages casual shoulder surfing; it is not encryption and does not hide text from websites, screenshots, or determined inspection.</p>
+      <div class="setup-grid">
+        <label>Script<select id="onboardingPack"></select></label>
+        <label>Reading strength<select id="onboardingProfile"></select></label>
+        <label>Hold to peek
+          <input id="onboardingRevealKey" type="text" maxlength="20" value="Alt">
+        </label>
+      </div>
+      <div class="setup-preview">
+        <div class="setup-preview-heading">
+          <strong>Try it</strong>
+          <span id="onboardingRendererNote">Fast Unicode rendering</span>
+        </div>
+        <div id="onboardingSample" class="sample onboarding-sample" tabindex="0" aria-live="polite" aria-describedby="onboardingTryHint"></div>
+        <p id="onboardingTryHint" class="setup-hint">Point at the preview and hold your peek key to reveal the original text.</p>
+      </div>
+      <fieldset>
+        <legend>Where should Kalima start active?</legend>
+        <label><input id="onboardingScopeAll" type="radio" name="onboardingScope" value="all"> All supported sites</label>
+        <label><input id="onboardingScopeSites" type="radio" name="onboardingScope" value="sites"> Only sites I explicitly enable</label>
+      </fieldset>
+      <div class="button-row">
+        <button id="finishOnboarding" type="button">Start using Kalima</button>
+        <button id="skipOnboarding" class="secondary" type="button">Keep current settings</button>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <div>
+          <h2>Default veil</h2>
+          <p>Site and tab rules override these choices.</p>
+        </div>
+        <div class="heading-actions">
+          <button id="reopenOnboarding" class="secondary compact" type="button">Run setup again</button>
+          <label class="switch-row"><input id="enabled" type="checkbox"> Enabled globally</label>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <label>Script<select id="pack"></select></label>
+        <label>Strength<select id="profile"></select></label>
+        <label>Rendering<select id="renderer"></select></label>
+        <label>Hold key<input id="revealKey" type="text" maxlength="20" value="Alt"></label>
+        <label>Keep some words visible
+          <span class="range-row">
+            <input id="clearWordFraction" type="range" min="0" max="0.5" step="0.05">
+            <output id="clearWordValue" for="clearWordFraction">0%</output>
+          </span>
+        </label>
+      </div>
+      <p class="fine-print">Visible words are readable to anyone looking at the page. Common sensitive-looking tokens remain fully veiled.</p>
+
+      <div id="sample" class="sample" aria-live="polite"></div>
+      <div class="check-grid">
+        <label><input id="showIndicator" type="checkbox"> Show page status indicator</label>
+      </div>
+    </section>
+
+    <section>
+      <h2>Adaptive behavior</h2>
+      <p>These features add convenience and visual variation. They do not increase the security boundary.</p>
+      <div class="form-grid">
+        <label>Sensitive-looking text
+          <select id="sensitiveMode">
+            <option value="off">No special treatment</option>
+            <option value="dense">Use Dense profile</option>
+            <option value="pack">Use another script</option>
+          </select>
+        </label>
+        <label>Sensitive-text script
+          <select id="sensitivePack"></select>
+          <small id="sensitivePackNote">Only scripts compatible with the selected renderer are shown.</small>
+        </label>
+        <label>Veil after inactivity (minutes)
+          <input id="autoVeilAfterMinutes" type="number" min="0" max="120" step="1">
+        </label>
+        <label>Glyph scale
+          <input id="glyphScale" type="range" min="0.8" max="1.2" step="0.05">
+        </label>
+        <label>Letter spacing
+          <input id="letterSpacing" type="range" min="-1" max="3" step="0.25">
+        </label>
+      </div>
+      <div class="check-grid adaptive-checks">
+        <label><input id="sessionVariation" type="checkbox"> Vary declared alternate glyphs each session</label>
+        <label><input id="autoVeilOnBlur" type="checkbox"> Force veil when the page loses focus</label>
+        <label><input id="learningHints" type="checkbox"> Double-click for a 2.5-second reading hint</label>
+        <label><input id="veilTextInputs" type="checkbox"> Veil completed words while typing</label>
+      </div>
+      <p class="fine-print">Input veiling occurs visually after a space in text fields and supported chat editors. The active word and real submitted value remain unchanged; password fields are always excluded.</p>
+      <p class="fine-print">Sensitive-looking detection is local and best-effort. It can miss private text and should never be treated as redaction.</p>
+    </section>
+
+    <section>
+      <h2>Saved sites</h2>
+      <p>Per-site on/off and appearance rules remain on this device.</p>
+      <div id="siteRules" class="rule-list"></div>
+    </section>
+
+    <section>
+      <h2>Custom declarative pack</h2>
+      <p>Custom packs are inert JSON data. They cannot contain code or remote assets.</p>
+      <textarea id="customPack" spellcheck="false" placeholder='{"schemaVersion":1,"id":"my-pack",...}'></textarea>
+      <div class="button-row">
+        <button id="importPack" type="button">Validate and install</button>
+        <button id="examplePack" class="secondary" type="button">Insert example</button>
+        <button id="exportSettings" class="secondary" type="button">Export settings</button>
+      </div>
+      <pre id="validation" aria-live="polite"></pre>
+      <div id="customPacks" class="rule-list custom-list"></div>
+    </section>
+
+    <section class="safety">
+      <h2>Privacy boundary</h2>
+      <ul>
+        <li>No page text, browsing history, or usage telemetry is stored.</li>
+        <li>Overlay mode keeps source text available to pages, copying, search, accessibility tools, and inspection.</li>
+        <li>Unicode mode temporarily changes visible DOM text and restores captured page text when disabled.</li>
+        <li>Optional input mirrors never alter submitted values and never apply to password fields.</li>
+        <li>Images, video, canvas, PDFs, browser chrome, and determined inspection remain readable.</li>
+      </ul>
+    </section>
+
+    <section class="danger">
+      <h2>Reset</h2>
+      <p>Remove site rules, custom packs, and preferences, then return to Kalima's original Greek defaults.</p>
+      <button id="reset" class="danger-button" type="button">Reset all settings</button>
+    </section>
+  </main>
+
+  <div id="saveStatus" role="status" aria-live="polite">Loading…</div>
+
+  <script src="shared/core.js"></script>
+  <script src="shared/state.js"></script>
+  <script src="shared/gregg.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

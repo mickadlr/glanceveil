@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.zip binary
+*.gz binary
+
+kalima.tmux text eol=lf
+tmux-plugin/*.tmux text eol=lf
+tmux-plugin/bin/* text eol=lf

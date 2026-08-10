@@ -1,0 +1,70 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Check source
+        run: npm run check
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Install Chrome for Testing
+        id: chrome
+        shell: bash
+        run: |
+          metadata="$RUNNER_TEMP/chrome-for-testing.json"
+          curl --fail --silent --show-error --location \
+            https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json \
+            --output "$metadata"
+          download_url=$(node -e '
+            const fs = require("node:fs");
+            const metadata = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+            const item = metadata.channels.Stable.downloads.chrome.find((entry) => entry.platform === "linux64");
+            if (!item) process.exit(1);
+            process.stdout.write(item.url);
+          ' "$metadata")
+          archive="$RUNNER_TEMP/chrome-for-testing.zip"
+          install_dir="$RUNNER_TEMP/chrome-for-testing"
+          curl --fail --silent --show-error --location "$download_url" --output "$archive"
+          unzip -q "$archive" -d "$install_dir"
+          echo "path=$install_dir/chrome-linux64/chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Test the complete browser-extension context
+        run: npm run test:extension
+        env:
+          GREEK_VEIL_CHROME_PATH: ${{ steps.chrome.outputs.path }}
+
+      - name: Build release candidates
+        run: npm run package:release
+
+      - name: Upload release candidates
+        uses: actions/upload-artifact@v7
+        with:
+          name: kalima-release-candidates
+          path: dist
+          if-no-files-found: error

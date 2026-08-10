@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+
+target_client=${1-}
+config_file=${2-}
+plugin_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+setup_command="'$(printf '%s' "$plugin_dir/bin/kalima-setup" | sed "s/'/'\\\\''/g")'"
+
+if [ -n "$target_client" ]; then
+  tmux display-popup \
+    -E \
+    -c "$target_client" \
+    -w "72%" \
+    -h "78%" \
+    -T "Kaλima setup" \
+    -e "KALIMA_PLUGIN_DIR=$plugin_dir" \
+    -e "KALIMA_TMUX_CONFIG=$config_file" \
+    "$setup_command"
+else
+  tmux display-popup \
+    -E \
+    -w "72%" \
+    -h "78%" \
+    -T "Kaλima setup" \
+    -e "KALIMA_PLUGIN_DIR=$plugin_dir" \
+    -e "KALIMA_TMUX_CONFIG=$config_file" \
+    "$setup_command"
+fi

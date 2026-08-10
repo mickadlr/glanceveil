@@ -1,0 +1,9 @@
+{
+  "id": "kalima",
+  "name": "Kalima",
+  "version": "0.2.0",
+  "minAppVersion": "1.5.0",
+  "description": "Veil note text with familiar alternate scripts without changing the Markdown source.",
+  "author": "Mickael DLR",
+  "isDesktopOnly": false
+}

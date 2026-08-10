@@ -1,0 +1,308 @@
+#!/usr/bin/env node
+"use strict";
+
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const { execFileSync } = require("node:child_process");
+const readline = require("node:readline/promises");
+const { stdin, stdout } = require("node:process");
+const Core = require("../../browser-extension/shared/core.js");
+const {
+  resolveTerminalOptions
+} = require("../lib/terminal.js");
+
+const CONFIG_MARKER = "# Kalima tmux settings v1";
+const DEFAULTS = Object.freeze({
+  packId: "greek",
+  profileId: "dense",
+  clearWordFraction: 0,
+  refreshMs: 250,
+  variationSeed: 0
+});
+const TERMINAL_PACKS = Core.BUILTIN_PACKS.filter((pack) =>
+  pack.renderers.includes("unicode")
+);
+
+function defaultConfigPath(environment = process.env) {
+  if (environment.KALIMA_TMUX_CONFIG) {
+    return path.resolve(environment.KALIMA_TMUX_CONFIG);
+  }
+  const configRoot = environment.XDG_CONFIG_HOME
+    ? path.resolve(environment.XDG_CONFIG_HOME)
+    : path.join(os.homedir(), ".config");
+  return path.join(configRoot, "kalima", "tmux.conf");
+}
+
+function parseArguments(arguments_) {
+  const parsed = { options: {} };
+  for (let index = 0; index < arguments_.length; index += 1) {
+    const argument = arguments_[index];
+    if (argument === "--help" || argument === "-h") parsed.help = true;
+    else if (argument === "--config-path") parsed.printConfigPath = true;
+    else if (argument === "--show") parsed.show = true;
+    else if (argument === "--write") parsed.write = true;
+    else if (argument === "--no-apply") parsed.apply = false;
+    else {
+      const value = arguments_[index + 1];
+      if (value === undefined) throw new Error(`Missing value for ${argument}.`);
+      if (argument === "--config") parsed.configPath = path.resolve(value);
+      else if (argument === "--pack") parsed.options.packId = value;
+      else if (argument === "--profile") parsed.options.profileId = value;
+      else if (argument === "--clear-words") parsed.options.clearWordFraction = value;
+      else if (argument === "--refresh-ms") parsed.options.refreshMs = value;
+      else if (argument === "--variation-seed") parsed.options.variationSeed = value;
+      else throw new Error(`Unknown option ${argument}.`);
+      index += 1;
+    }
+  }
+  return parsed;
+}
+
+function usage() {
+  return [
+    "Usage: kalima-setup",
+    "       kalima-setup --show",
+    "       kalima-setup --config-path",
+    "       kalima-setup --write --pack greek --profile dense",
+    "                    [--clear-words 0..0.5] [--refresh-ms 100..5000]",
+    "                    [--variation-seed integer] [--no-apply]",
+    "",
+    "Interactive mode saves persistent tmux settings and applies them immediately."
+  ].join("\n");
+}
+
+function readSavedSettings(configPath) {
+  if (!fs.existsSync(configPath)) return { ...DEFAULTS };
+  const source = fs.readFileSync(configPath, "utf8");
+  const values = {};
+  for (const match of source.matchAll(
+    /^set-option -g @(kalima-[a-z-]+) ([^\s#]+)\s*$/gm
+  )) {
+    values[match[1]] = match[2];
+  }
+  return {
+    packId: values["kalima-pack"] || DEFAULTS.packId,
+    profileId: values["kalima-profile"] || DEFAULTS.profileId,
+    clearWordFraction: Number(
+      values["kalima-clear-words"] ?? DEFAULTS.clearWordFraction
+    ),
+    refreshMs: Number(values["kalima-refresh-ms"] ?? DEFAULTS.refreshMs),
+    variationSeed: Number(
+      values["kalima-variation-seed"] ?? DEFAULTS.variationSeed
+    )
+  };
+}
+
+function validateSettings(settings) {
+  const resolved = resolveTerminalOptions(settings);
+  return {
+    packId: resolved.packId,
+    profileId: resolved.profileId,
+    clearWordFraction: resolved.clearWordFraction,
+    refreshMs: resolved.refreshMs,
+    variationSeed: resolved.variationSeed
+  };
+}
+
+function serializeSettings(settings) {
+  return [
+    CONFIG_MARKER,
+    "# Edit with: prefix + Ctrl-k, or tmux-plugin/bin/kalima-setup",
+    "set-option -g @kalima-configured 1",
+    `set-option -g @kalima-pack ${settings.packId}`,
+    `set-option -g @kalima-profile ${settings.profileId}`,
+    `set-option -g @kalima-clear-words ${settings.clearWordFraction}`,
+    `set-option -g @kalima-refresh-ms ${settings.refreshMs}`,
+    `set-option -g @kalima-variation-seed ${settings.variationSeed}`,
+    ""
+  ].join("\n");
+}
+
+function saveSettings(configPath, settings) {
+  if (fs.existsSync(configPath)) {
+    const existing = fs.readFileSync(configPath, "utf8");
+    if (!existing.startsWith(CONFIG_MARKER)) {
+      throw new Error(
+        `Refusing to replace unrecognized file: ${configPath}`
+      );
+    }
+  }
+  fs.mkdirSync(path.dirname(configPath), { recursive: true, mode: 0o700 });
+  if (fs.existsSync(configPath)) {
+    fs.copyFileSync(configPath, `${configPath}.bak`);
+    fs.chmodSync(`${configPath}.bak`, 0o600);
+  }
+  const temporaryPath = `${configPath}.${process.pid}.tmp`;
+  try {
+    fs.writeFileSync(temporaryPath, serializeSettings(settings), {
+      encoding: "utf8",
+      mode: 0o600
+    });
+    fs.renameSync(temporaryPath, configPath);
+    fs.chmodSync(configPath, 0o600);
+  } finally {
+    if (fs.existsSync(temporaryPath)) fs.unlinkSync(temporaryPath);
+  }
+}
+
+function shellQuote(value) {
+  return `'${String(value).replaceAll("'", "'\\''")}'`;
+}
+
+function applySettings(configPath) {
+  if (!process.env.TMUX) return false;
+  execFileSync("tmux", ["source-file", configPath], { stdio: "ignore" });
+  const pluginDir = process.env.KALIMA_PLUGIN_DIR
+    ? path.resolve(process.env.KALIMA_PLUGIN_DIR)
+    : path.resolve(__dirname, "..");
+  execFileSync(
+    "tmux",
+    ["run-shell", shellQuote(path.join(pluginDir, "kalima.tmux"))],
+    { stdio: "ignore" }
+  );
+  return true;
+}
+
+async function choose(question, choices, defaultIndex, interface_) {
+  stdout.write(`\n${question}\n`);
+  choices.forEach((choice, index) => {
+    stdout.write(`  ${index + 1}. ${choice.label}\n`);
+  });
+  while (true) {
+    const answer = (await interface_.question(`Choose [${defaultIndex + 1}]: `)).trim();
+    if (!answer) return choices[defaultIndex].value;
+    const numeric = Number(answer);
+    if (Number.isInteger(numeric) && numeric >= 1 && numeric <= choices.length) {
+      return choices[numeric - 1].value;
+    }
+    const direct = choices.find((choice) => choice.value === answer.toLowerCase());
+    if (direct) return direct.value;
+    stdout.write("Please enter one of the listed numbers.\n");
+  }
+}
+
+async function askNumber(question, defaultValue, minimum, maximum, interface_) {
+  while (true) {
+    const answer = (await interface_.question(`${question} [${defaultValue}]: `)).trim();
+    const value = answer ? Number(answer) : defaultValue;
+    if (Number.isFinite(value) && value >= minimum && value <= maximum) return value;
+    stdout.write(`Enter a number from ${minimum} to ${maximum}.\n`);
+  }
+}
+
+async function interactiveSetup(configPath) {
+  if (!stdin.isTTY || !stdout.isTTY) {
+    throw new Error("Interactive setup requires a terminal. Use --write for automation.");
+  }
+  const saved = readSavedSettings(configPath);
+  const interface_ = readline.createInterface({ input: stdin, output: stdout });
+  try {
+    stdout.write("\u001b[2J\u001b[HKaλima · tmux setup\n");
+    stdout.write("These settings affect only the transformed tmux view.\n");
+
+    const packChoices = TERMINAL_PACKS.map((pack) => ({
+      value: pack.id,
+      label: `${pack.name} — ${Core.transform(pack.sample, pack, pack.defaultProfile)}`
+    }));
+    const savedPackIndex = Math.max(
+      0,
+      packChoices.findIndex((choice) => choice.value === saved.packId)
+    );
+    const packId = await choose("Script", packChoices, savedPackIndex, interface_);
+    const pack = TERMINAL_PACKS.find((candidate) => candidate.id === packId);
+
+    const profileChoices = Object.entries(pack.profiles).map(([id, profile]) => ({
+      value: id,
+      label: `${profile.name} — ${Core.transform(pack.sample, pack, id)}`
+    }));
+    const savedProfileIndex = Math.max(
+      0,
+      profileChoices.findIndex((choice) => choice.value === saved.profileId)
+    );
+    const profileId = await choose(
+      "Reading strength",
+      profileChoices,
+      savedProfileIndex,
+      interface_
+    );
+
+    const clearPercent = await askNumber(
+      "\nPercent of complete words to leave clear",
+      Math.round(saved.clearWordFraction * 100),
+      0,
+      50,
+      interface_
+    );
+    const refreshMs = await askNumber(
+      "Refresh interval in milliseconds",
+      saved.refreshMs,
+      100,
+      5000,
+      interface_
+    );
+    const settings = validateSettings({
+      packId,
+      profileId,
+      clearWordFraction: clearPercent / 100,
+      refreshMs,
+      variationSeed: saved.variationSeed
+    });
+    saveSettings(configPath, settings);
+    const applied = applySettings(configPath);
+
+    stdout.write(`\nSaved to ${configPath}\n`);
+    stdout.write(applied
+      ? "Settings are active. Press prefix + K to open Kalima.\n"
+      : "Reload tmux to apply the settings.\n");
+    await interface_.question("Press Enter to finish.");
+    return settings;
+  } finally {
+    interface_.close();
+  }
+}
+
+function showSettings(configPath) {
+  const settings = validateSettings(readSavedSettings(configPath));
+  stdout.write([
+    `Config: ${configPath}`,
+    `Script: ${settings.packId}`,
+    `Profile: ${settings.profileId}`,
+    `Clear words: ${Math.round(settings.clearWordFraction * 100)}%`,
+    `Refresh: ${settings.refreshMs} ms`,
+    ""
+  ].join("\n"));
+}
+
+async function main() {
+  const parsed = parseArguments(process.argv.slice(2));
+  const configPath = parsed.configPath || defaultConfigPath();
+  if (parsed.help) {
+    stdout.write(`${usage()}\n`);
+    return;
+  }
+  if (parsed.printConfigPath) {
+    stdout.write(`${configPath}\n`);
+    return;
+  }
+  if (parsed.show) {
+    showSettings(configPath);
+    return;
+  }
+  if (parsed.write) {
+    const settings = validateSettings({
+      ...readSavedSettings(configPath),
+      ...parsed.options
+    });
+    saveSettings(configPath, settings);
+    if (parsed.apply !== false) applySettings(configPath);
+    stdout.write(`${configPath}\n`);
+    return;
+  }
+  await interactiveSetup(configPath);
+}
+
+main().catch((error) => {
+  process.stderr.write(`kalima-setup: ${error.message}\n`);
+  process.exitCode = 2;
+});

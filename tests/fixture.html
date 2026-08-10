@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Kalima smoke fixture</title>
+</head>
+<body>
+  <main>
+    <h1 id="heading">Meet me at the library</h1>
+    <p id="dynamic">A dynamic message arrives soon.</p>
+    <p id="sensitive">Contact alice@example.com today please now.</p>
+    <label>Safe input <input id="safe-input" value="Never transform this value"></label>
+    <pre id="safe-code">const answer = "never transform code";</pre>
+  </main>
+  <script>
+    setTimeout(() => {
+      document.getElementById("dynamic").textContent = "Updated private message";
+    }, 150);
+  </script>
+</body>
+</html>
