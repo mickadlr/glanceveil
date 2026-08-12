@@ -1,7 +1,7 @@
 {
   "id": "glanceveil",
   "name": "GlanceVeil",
-  "version": "0.2.0",
+  "version": "2.2.1",
   "minAppVersion": "1.5.0",
   "description": "Veil note text with familiar alternate scripts without changing the Markdown source.",
   "author": "Mickael DLR",
