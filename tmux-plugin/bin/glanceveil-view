@@ -7,13 +7,13 @@ const {
   truncateToColumns
 } = require("../lib/terminal.js");
 
-const sourcePane = String(process.env.KALIMA_SOURCE_PANE || "");
+const sourcePane = String(process.env.GLANCEVEIL_SOURCE_PANE || "");
 const terminalOptions = {
-  packId: process.env.KALIMA_PACK,
-  profileId: process.env.KALIMA_PROFILE,
-  clearWordFraction: process.env.KALIMA_CLEAR_WORDS,
-  variationSeed: process.env.KALIMA_VARIATION_SEED,
-  refreshMs: process.env.KALIMA_REFRESH_MS
+  packId: process.env.GLANCEVEIL_PACK,
+  profileId: process.env.GLANCEVEIL_PROFILE,
+  clearWordFraction: process.env.GLANCEVEIL_CLEAR_WORDS,
+  variationSeed: process.env.GLANCEVEIL_VARIATION_SEED,
+  refreshMs: process.env.GLANCEVEIL_REFRESH_MS
 };
 
 let transformer;
@@ -23,7 +23,7 @@ try {
   }
   transformer = createTerminalTransformer(terminalOptions);
 } catch (error) {
-  process.stderr.write(`Kalima: ${error.message}\n`);
+  process.stderr.write(`GlanceVeil: ${error.message}\n`);
   process.exit(2);
 }
 
@@ -79,7 +79,7 @@ function showFailure(message) {
   const detail = String(message || "Unable to capture the source pane.")
     .replace(/\s+/g, " ")
     .slice(0, 240);
-  writeFrame(`Kalima tmux view stopped.\n\n${detail}\n\nPress Ctrl-G twice to reveal the source.`);
+  writeFrame(`GlanceVeil tmux view stopped.\n\n${detail}\n\nPress Ctrl-G twice to reveal the source.`);
 }
 
 function applyInputModes(signature) {

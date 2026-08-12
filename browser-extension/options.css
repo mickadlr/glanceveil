@@ -65,7 +65,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .range-row output { min-width: 34px; color: var(--ink); font-variant-numeric: tabular-nums; text-align: right; }
 input[type="text"], select { padding: 9px 10px; }
 textarea { min-height: 210px; padding: 13px; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
-input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible,
+.settings-support a:focus-visible {
   outline: 3px solid rgba(94,63,176,.25);
   outline-offset: 2px;
 }
@@ -201,6 +202,16 @@ pre { min-height: 20px; margin: 10px 0 0; color: var(--muted); white-space: pre-
 .safety ul { margin-bottom: 0; padding-left: 20px; }
 .danger { border-color: #ebc9c9; }
 .danger-button { border-color: #a53232; background: #a53232; }
+.settings-support {
+  border: 0;
+  padding: 4px;
+  background: transparent;
+  box-shadow: none;
+  text-align: center;
+}
+.settings-support p { margin: 0; font-size: 12px; }
+.settings-support a { color: var(--muted); text-underline-offset: 2px; }
+.settings-support a:hover { color: var(--accent); }
 
 #saveStatus {
   position: fixed;

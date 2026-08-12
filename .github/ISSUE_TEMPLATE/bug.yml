@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a reproducible Kalima problem using synthetic content.
+description: Report a reproducible GlanceVeil problem using synthetic content.
 title: "[Bug]: "
 labels:
   - bug
@@ -23,7 +23,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Kalima version
+      label: GlanceVeil version
       placeholder: 2.2.1
     validations:
       required: true

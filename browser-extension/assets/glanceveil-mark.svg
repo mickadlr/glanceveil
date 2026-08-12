@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
-  <title id="title">Kalima</title>
-  <desc id="desc">A K and Greek lambda beneath a translucent veil.</desc>
+  <title id="title">GlanceVeil</title>
+  <desc id="desc">The letters G and V beneath a translucent veil.</desc>
   <defs>
     <linearGradient id="bg" x1="16" y1="12" x2="112" y2="116" gradientUnits="userSpaceOnUse">
       <stop stop-color="#241842"/>
@@ -13,6 +13,6 @@
   </defs>
   <rect x="4" y="4" width="120" height="120" rx="29" fill="url(#bg)"/>
   <path d="M18 25C45 9 79 12 110 30L96 108C69 93 43 91 18 104Z" fill="url(#veil)"/>
-  <path d="M33 37v54M35 66l25-29M36 65l27 27" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M74 91l15-48 18 48" fill="none" stroke="#d9ccff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="22" y="86" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="59" font-weight="760" letter-spacing="-5">G</text>
+  <text x="68" y="86" fill="#d9ccff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="57" font-weight="760" letter-spacing="-4">V</text>
 </svg>

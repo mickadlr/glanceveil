@@ -335,7 +335,7 @@
       id: "cyrillic",
       name: "Cyrillic",
       script: "Cyrillic",
-      maturity: "beta",
+      maturity: "production",
       description: "Phonetic Cyrillic-looking substitutions.",
       renderers: ["unicode", "overlay"],
       defaultRenderer: "unicode",

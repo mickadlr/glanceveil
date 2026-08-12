@@ -7,7 +7,7 @@ const {
 
 function usage() {
   return [
-    "Usage: kalima-filter [--pack greek] [--profile dense]",
+    "Usage: glanceveil-filter [--pack greek] [--profile dense]",
     "                     [--clear-words 0..0.5] [--variation-seed integer]",
     "",
     "Transforms piped terminal text while preserving ANSI control sequences."
@@ -36,7 +36,7 @@ async function main() {
   try {
     parsed = parseArguments(process.argv.slice(2));
   } catch (error) {
-    process.stderr.write(`kalima-filter: ${error.message}\n\n${usage()}\n`);
+    process.stderr.write(`glanceveil-filter: ${error.message}\n\n${usage()}\n`);
     process.exitCode = 2;
     return;
   }
@@ -49,7 +49,7 @@ async function main() {
   try {
     transformer = createTerminalTransformer(parsed.options);
   } catch (error) {
-    process.stderr.write(`kalima-filter: ${error.message}\n`);
+    process.stderr.write(`glanceveil-filter: ${error.message}\n`);
     process.exitCode = 2;
     return;
   }
@@ -61,6 +61,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  process.stderr.write(`kalima-filter: ${error.message}\n`);
+  process.stderr.write(`glanceveil-filter: ${error.message}\n`);
   process.exitCode = 1;
 });

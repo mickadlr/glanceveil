@@ -9,7 +9,7 @@ const MAX_REFRESH_MS = 5000;
 
 function terminalError(message) {
   const error = new Error(message);
-  error.name = "KalimaTerminalError";
+  error.name = "GlanceVeilTerminalError";
   return error;
 }
 
@@ -21,7 +21,7 @@ function resolveTerminalOptions(options = {}) {
       .filter((candidate) => candidate.renderers.includes("unicode"))
       .map((candidate) => candidate.id)
       .join(", ");
-    throw terminalError(`Unknown Kalima pack "${packId}". Terminal packs: ${supported}.`);
+    throw terminalError(`Unknown GlanceVeil pack "${packId}". Terminal packs: ${supported}.`);
   }
   if (!pack.renderers.includes("unicode")) {
     throw terminalError(

@@ -9,13 +9,13 @@ shoulder-surfing harder while preserving normal page interaction.
 
 ### `storage`
 
-Stores the user's Kalima preferences, custom declarative script packs, and
+Stores the user's GlanceVeil preferences, custom declarative script packs, and
 explicit per-site rules locally. Temporary tab overrides use session storage
 when supported. No page text or telemetry is stored.
 
 ### Host access: `<all_urls>`
 
-Kalima's user-facing purpose applies to arbitrary webpages selected by the
+GlanceVeil's user-facing purpose applies to arbitrary webpages selected by the
 user. Its content script must read eligible visible text and change its local
 presentation, observe dynamic replacements, and display its local status and
 input mirror. It excludes passwords, code, media, and unsupported surfaces.
@@ -30,7 +30,7 @@ document model, measured text, copy, selection, or submitted input.
 
 ## Data handling disclosure
 
-Kalima locally handles these categories only as necessary for its visible
+GlanceVeil locally handles these categories only as necessary for its visible
 feature:
 
 - Website content
@@ -38,9 +38,13 @@ feature:
 - Form data in supported non-password text controls when input veiling is on
 - A site origin when the user explicitly saves a site rule
 
-Kalima does not collect or transmit these categories off the user's device. It
+GlanceVeil does not collect or transmit these categories off the user's device. It
 does not handle authentication information, financial transactions, health
 data, location, contacts, or browsing history for analytics or advertising.
+
+The popup and settings page contain an optional user-activated link to GlanceVeil's
+Ko-fi page. GlanceVeil makes no request to Ko-fi unless the user opens that link,
+and it sends no page content, browsing activity, or settings to Ko-fi.
 
 The dashboard disclosure and [project privacy policy](../../PRIVACY.md) must
 remain consistent. If the dashboard treats local processing as data handling,
@@ -50,12 +54,12 @@ developer.
 
 ## Certifications
 
-- Data use is limited to Kalima's disclosed single purpose.
+- Data use is limited to GlanceVeil's disclosed single purpose.
 - User data is not sold or transferred to third parties outside an acquisition
   permitted by applicable policy and law.
 - User data is not used for advertising, creditworthiness, or lending.
-- Humans are not allowed to read user data; Kalima has no backend through which
+- Humans are not allowed to read user data; GlanceVeil has no backend through which
   the developer could access it.
 - The extension contains no remotely hosted executable code.
-- Kalima's use of information received from Google APIs adheres to the Chrome
+- GlanceVeil's use of information received from Google APIs adheres to the Chrome
   Web Store User Data Policy, including the Limited Use requirements.

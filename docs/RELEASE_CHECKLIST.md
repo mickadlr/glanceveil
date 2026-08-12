@@ -1,4 +1,4 @@
-# Kalima release checklist
+# GlanceVeil release checklist
 
 Do not publish an Obsidian release until every automated check passes and the
 manual device matrix has been completed for the release candidate.
@@ -33,7 +33,7 @@ development dependencies, or personal files. The GitHub tag must match the
 version in `manifest.json` exactly.
 
 Confirm that `dist/tmux` contains a versioned `.tar.gz` and matching SHA-256
-file. Extract it in a temporary directory and confirm that `kalima.tmux` and
+file. Extract it in a temporary directory and confirm that `glanceveil.tmux` and
 every file under `tmux-plugin/bin` retain executable permissions.
 
 ## Chrome Web Store material
@@ -88,9 +88,9 @@ Record the Obsidian version, operating-system version, and device model.
 
 ## Privacy and licensing gate
 
-- [ ] README states that Kalima is visual obscurity, not encryption
+- [ ] README states that GlanceVeil is visual obscurity, not encryption
 - [ ] README discloses no telemetry, network use, or Markdown writes
-- [ ] `LICENSE` identifies Kalima as proprietary source-available software
+- [ ] `LICENSE` identifies GlanceVeil as proprietary source-available software
 - [ ] `LICENSE` permits unmodified official browser, Obsidian, and tmux releases
 - [ ] `PRIVACY.md` accurately covers local text handling and stored settings
 - [ ] Release notes do not imply that the project is open source

@@ -39,7 +39,7 @@ test("content startup fails clear once when required globals are unavailable", (
   });
 
   assert.deepEqual(errors, [
-    "[Kalima] The shared runtime did not initialize. " +
-    "The page was left unchanged; reload Kalima and then reload this tab."
+    "[GlanceVeil] The shared runtime did not initialize. " +
+    "The page was left unchanged; reload GlanceVeil and then reload this tab."
   ]);
 });

@@ -195,6 +195,10 @@ try {
       document.head.append(style);
     })()`);
     await evaluate(contentSource);
+    const pageContext = await evaluate(`new Promise((resolve) => {
+      globalThis.__gvMessageListener({ type: 'gv-get-page-context' }, {}, resolve);
+    })`);
+    assert.equal(pageContext.url, await evaluate("location.href"));
     if (!customReplay) {
       await evaluate(`setTimeout(() => {
         document.getElementById('dynamic').textContent = 'Updated private message';

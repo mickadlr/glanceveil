@@ -1,16 +1,16 @@
 {
-  "name": "kalima",
+  "name": "glanceveil",
   "version": "2.2.1",
   "private": true,
-  "description": "Kalima, a familiar-script privacy veil for webpages, Obsidian notes, and tmux panes.",
+  "description": "GlanceVeil, a familiar-script privacy veil for webpages, Obsidian notes, and tmux panes.",
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mickadlr/kalima.git"
+    "url": "git+https://github.com/mickadlr/glanceveil.git"
   },
-  "homepage": "https://github.com/mickadlr/kalima#readme",
+  "homepage": "https://github.com/mickadlr/glanceveil#readme",
   "bugs": {
-    "url": "https://github.com/mickadlr/kalima/issues"
+    "url": "https://github.com/mickadlr/glanceveil/issues"
   },
   "scripts": {
     "build:extension": "node scripts/build-extension.mjs",
@@ -25,7 +25,7 @@
     "package:obsidian": "npm run build:obsidian && node scripts/package-obsidian.mjs",
     "dev:obsidian": "node obsidian-plugin/esbuild.config.mjs",
     "check:obsidian": "tsc -p obsidian-plugin/tsconfig.json",
-    "check": "npm run check:extension-bundles && npm run check:packages && node --check browser-extension/content-bundle.js && node --check browser-extension/google-docs-bundle.js && node --check browser-extension/shared/core.js && node --check browser-extension/shared/state.js && node --check browser-extension/shared/gregg.js && node --check browser-extension/google-docs-main.js && node --check browser-extension/content.js && node --check browser-extension/background.js && node --check browser-extension/popup.js && node --check browser-extension/options.js && node --check scripts/lib/release-archive.mjs && node --check scripts/package-chrome.mjs && node --check scripts/package-tmux.mjs && node --check tmux-plugin/lib/terminal.js && node --check tmux-plugin/bin/kalima-filter && node --check tmux-plugin/bin/kalima-setup && node --check tmux-plugin/bin/kalima-view && sh -n kalima.tmux tmux-plugin/kalima.tmux tmux-plugin/bin/open-setup tmux-plugin/bin/open-view && node --check tests/extension-smoke.mjs && npm run check:obsidian"
+    "check": "npm run check:extension-bundles && npm run check:packages && node --check browser-extension/content-bundle.js && node --check browser-extension/google-docs-bundle.js && node --check browser-extension/shared/core.js && node --check browser-extension/shared/state.js && node --check browser-extension/shared/gregg.js && node --check browser-extension/google-docs-main.js && node --check browser-extension/content.js && node --check browser-extension/background.js && node --check browser-extension/popup.js && node --check browser-extension/options.js && node --check scripts/lib/release-archive.mjs && node --check scripts/package-chrome.mjs && node --check scripts/package-tmux.mjs && node --check tmux-plugin/lib/terminal.js && node --check tmux-plugin/bin/glanceveil-filter && node --check tmux-plugin/bin/glanceveil-setup && node --check tmux-plugin/bin/glanceveil-view && sh -n glanceveil.tmux tmux-plugin/glanceveil.tmux tmux-plugin/bin/open-setup tmux-plugin/bin/open-view && node --check tests/extension-smoke.mjs && npm run check:obsidian"
   },
   "devDependencies": {
     "@codemirror/language": "^6.11.3",

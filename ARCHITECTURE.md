@@ -1,8 +1,8 @@
-# Kalima architecture
+# GlanceVeil architecture
 
 ## Product invariant
 
-Kalima changes what a person sees. It must not change what the person types
+GlanceVeil changes what a person sees. It must not change what the person types
 or submits. Its threat model is casual visual observation, not recovery by a
 determined party with access to the browser, DOM, accessibility tree, clipboard,
 screenshots, or extension storage.
@@ -41,13 +41,13 @@ screenshots, or extension storage.
 - `tmux-plugin/lib/terminal.js` adapts the shared Unicode transformer to plain
   terminal text, preserves ANSI control sequences for filter use, and supplies
   terminal-width clipping.
-- `tmux-plugin/bin/kalima-view` captures the visible content of one source pane
+- `tmux-plugin/bin/glanceveil-view` captures the visible content of one source pane
   into a separate temporary tmux window. It refreshes the transformed view and
   relays raw keyboard bytes to the source with `tmux send-keys -H`, without
   rewriting the source pane or changing its scrollback. Source cursor-key,
   keypad, and mouse flags are mirrored onto the viewer so tmux encodes input
   for full-screen applications consistently.
-- `tmux-plugin/bin/kalima-setup` owns first-run and repeat configuration. It
+- `tmux-plugin/bin/glanceveil-setup` owns first-run and repeat configuration. It
   atomically writes a bounded, data-only tmux config beneath the user's config
   directory, backs up the prior generated file, and applies it to the current
   server. An unrecognized existing file is never overwritten.
@@ -57,11 +57,13 @@ unpacked MV3 extension must package content-script dependencies beneath its own
 root. The Obsidian build imports and bundles those exact source files, so there
 is no copied pack table or transformation implementation to drift.
 
-The Obsidian plugin ID, browser command ID, DOM/data prefixes, CSS custom
-properties, and shared UMD globals retain their original `greek-veil` or
-`GreekVeil` identifiers. They are compatibility contracts, not display names;
-keeping them stable preserves installed-plugin data, shortcuts, settings, and
-page cleanup behavior across the Kalima rebrand.
+The browser command ID, DOM/data prefixes, CSS custom properties, and shared
+UMD globals retain their original `greek-veil` or `GreekVeil` identifiers.
+They are compatibility contracts, not display names; keeping them stable
+preserves shortcuts, settings, and page cleanup behavior across the GlanceVeil
+rebrand. Public package names, the Obsidian plugin ID, and tmux commands use the
+`glanceveil` identifier because those distribution identities were not yet
+published when the final name was selected.
 
 ## State precedence
 

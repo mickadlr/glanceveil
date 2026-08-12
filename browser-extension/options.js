@@ -494,13 +494,13 @@ fields.exportSettings.addEventListener("click", () => {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = "kalima-settings.json";
+  anchor.download = "glanceveil-settings.json";
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 
 fields.reset.addEventListener("click", async () => {
-  if (!confirm("Reset every Kalima preference, site rule, and custom pack?")) return;
+  if (!confirm("Reset every GlanceVeil preference, site rule, and custom pack?")) return;
   const result = await send({ type: "gv-update-settings", patch: structuredClone(State.DEFAULT_SETTINGS) });
   settings = result.settings;
   catalog = result.catalog;

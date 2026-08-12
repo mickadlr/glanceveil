@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kalima settings</title>
+  <title>GlanceVeil settings</title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <header>
     <div class="header-lockup">
-      <img src="assets/kalima-mark.svg" alt="">
+      <img src="assets/glanceveil-mark.svg" alt="">
       <div>
         <p class="eyebrow">READABLE TO YOU · OPAQUE AT A GLANCE</p>
-        <h1><span class="wordmark" aria-label="Kalima">Ka<span aria-hidden="true">λ</span>ima</span> settings</h1>
+        <h1><span class="wordmark">Glance<span>Veil</span></span> settings</h1>
         <p>A shoulder-surfing filter—not encryption.</p>
       </div>
     </div>
@@ -25,9 +25,9 @@
         <li><span>2</span> Try the veil</li>
         <li><span>3</span> Choose where it runs</li>
       </ol>
-      <p class="eyebrow">WELCOME TO KALIMA</p>
+      <p class="eyebrow">WELCOME TO GLANCEVEIL</p>
       <h2 id="onboardingTitle">Set up your reading veil</h2>
-      <p>This takes about a minute. Kalima discourages casual shoulder surfing; it is not encryption and does not hide text from websites, screenshots, or determined inspection.</p>
+      <p>This takes about a minute. GlanceVeil discourages casual shoulder surfing; it is not encryption and does not hide text from websites, screenshots, or determined inspection.</p>
       <div class="setup-grid">
         <label>Script<select id="onboardingPack"></select></label>
         <label>Reading strength<select id="onboardingProfile"></select></label>
@@ -44,12 +44,12 @@
         <p id="onboardingTryHint" class="setup-hint">Point at the preview and hold your peek key to reveal the original text.</p>
       </div>
       <fieldset>
-        <legend>Where should Kalima start active?</legend>
+        <legend>Where should GlanceVeil start active?</legend>
         <label><input id="onboardingScopeAll" type="radio" name="onboardingScope" value="all"> All supported sites</label>
         <label><input id="onboardingScopeSites" type="radio" name="onboardingScope" value="sites"> Only sites I explicitly enable</label>
       </fieldset>
       <div class="button-row">
-        <button id="finishOnboarding" type="button">Start using Kalima</button>
+        <button id="finishOnboarding" type="button">Start using GlanceVeil</button>
         <button id="skipOnboarding" class="secondary" type="button">Keep current settings</button>
       </div>
     </section>
@@ -153,8 +153,12 @@
 
     <section class="danger">
       <h2>Reset</h2>
-      <p>Remove site rules, custom packs, and preferences, then return to Kalima's original Greek defaults.</p>
+      <p>Remove site rules, custom packs, and preferences, then return to GlanceVeil's original Greek defaults.</p>
       <button id="reset" class="danger-button" type="button">Reset all settings</button>
+    </section>
+
+    <section class="settings-support" aria-label="Support GlanceVeil">
+      <p>GlanceVeil has no ads or telemetry. <a href="https://ko-fi.com/mickadlr" target="_blank" rel="noopener noreferrer">Support its maintenance on Ko-fi</a> if you would like to.</p>
     </section>
   </main>
 

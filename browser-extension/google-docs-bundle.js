@@ -338,7 +338,7 @@
       id: "cyrillic",
       name: "Cyrillic",
       script: "Cyrillic",
-      maturity: "beta",
+      maturity: "production",
       description: "Phonetic Cyrillic-looking substitutions.",
       renderers: ["unicode", "overlay"],
       defaultRenderer: "unicode",
@@ -834,12 +834,12 @@
   const isGoogleDocument =
     location.hostname === "docs.google.com" && location.pathname.startsWith("/document/");
   if (!Core || !contextPrototype || !isGoogleDocument ||
-      globalThis.__kalimaGoogleDocsAdapterInstalled) {
+      globalThis.__glanceveilGoogleDocsAdapterInstalled) {
     return;
   }
 
-  const STATE_CHANNEL = "kalima-google-docs-state-v1";
-  const STATUS_CHANNEL = "kalima-google-docs-status-v1";
+  const STATE_CHANNEL = "glanceveil-google-docs-state-v1";
+  const STATUS_CHANNEL = "glanceveil-google-docs-status-v1";
   const PRESTATE_WAIT_MS = 750;
   const MAX_QUEUED_DRAWS = 2_000;
   const CONTEXT_STATE_PROPERTIES = [
@@ -1124,7 +1124,7 @@
     const descriptor = Object.getOwnPropertyDescriptor(contextPrototype, name);
     Object.defineProperty(contextPrototype, name, {
       ...descriptor,
-      value: function kalimaGoogleDocsTextDraw(...args) {
+      value: function glanceveilGoogleDocsTextDraw(...args) {
         return drawText(nativeMethod, this, args);
       }
     });
@@ -1203,11 +1203,11 @@
     postStatus();
   });
 
-  Object.defineProperty(globalThis, "__kalimaGoogleDocsAdapterInstalled", {
+  Object.defineProperty(globalThis, "__glanceveilGoogleDocsAdapterInstalled", {
     value: true,
     configurable: false
   });
-  Object.defineProperty(globalThis, "__kalimaGoogleDocsAdapter", {
+  Object.defineProperty(globalThis, "__glanceveilGoogleDocsAdapter", {
     get: statusSnapshot,
     configurable: false
   });

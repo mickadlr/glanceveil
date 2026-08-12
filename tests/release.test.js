@@ -57,12 +57,12 @@ test("Chrome release archive is deterministic and contains only release files", 
   const second = await buildChromeArchive();
   assert.deepEqual(first, second);
   assert.deepEqual(zipEntryNames(first), [
+    "assets/glanceveil-mark.svg",
+    "assets/glanceveil-wordmark.svg",
     "assets/icon128.png",
     "assets/icon16.png",
     "assets/icon32.png",
     "assets/icon48.png",
-    "assets/kalima-mark.svg",
-    "assets/kalima-wordmark.svg",
     "background.js",
     "content-bundle.js",
     "content.css",
@@ -88,8 +88,9 @@ test("tmux release archive is deterministic, standalone, and executable", async 
   assert.deepEqual(first, second);
   const entries = tarEntries(first);
   const names = entries.map((entry) => entry.name);
-  assert.ok(names.some((name) => name.endsWith("/kalima.tmux")));
+  assert.ok(names.some((name) => name.endsWith("/glanceveil.tmux")));
   assert.ok(names.some((name) => name.endsWith("/browser-extension/shared/core.js")));
+  assert.ok(names.some((name) => name.endsWith("/SUPPORT.md")));
   for (const entry of entries.filter((candidate) =>
     candidate.name.endsWith(".tmux") || candidate.name.includes("/bin/"))) {
     assert.equal(entry.mode, 0o755, entry.name);
@@ -102,7 +103,7 @@ test("store submission copy and correctly sized artwork are present", () => {
   const listing = fs.readFileSync(path.join(store, "listing.md"), "utf8");
   const privacyFields = fs.readFileSync(path.join(store, "privacy-fields.md"), "utf8");
   assert.match(listing, /visual obscurity, not encryption/i);
-  assert.match(listing, /makes no network requests/i);
+  assert.match(listing, /makes no background network\s+requests/i);
   assert.match(privacyFields, /Single purpose/);
   assert.match(privacyFields, /<all_urls>/);
   assert.match(privacyFields, /Limited Use requirements/);
@@ -130,4 +131,26 @@ test("privacy and license cover every shipped integration without weakening rest
   }
   assert.match(privacy, /does\s+not collect, transmit, sell, share/);
   assert.match(privacy, /Limited Use requirements/);
+});
+
+test("support is voluntary, user-activated, and grants no commercial rights", () => {
+  const supportUrl = "https://ko-fi.com/mickadlr";
+  const support = fs.readFileSync(path.join(root, "SUPPORT.md"), "utf8");
+  const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
+  const popup = fs.readFileSync(path.join(root, "browser-extension", "popup.html"), "utf8");
+  const options = fs.readFileSync(path.join(root, "browser-extension", "options.html"), "utf8");
+  const obsidian = fs.readFileSync(path.join(root, "obsidian-plugin", "src", "settings.ts"), "utf8");
+  const tmux = fs.readFileSync(path.join(root, "tmux-plugin", "README.md"), "utf8");
+  const privacy = fs.readFileSync(path.join(root, "PRIVACY.md"), "utf8");
+  const funding = fs.readFileSync(path.join(root, ".github", "FUNDING.yml"), "utf8");
+  const escapedSupportUrl = supportUrl.replace(/[./]/g, "\\$&");
+
+  for (const surface of [support, readme, popup, options, obsidian, tmux, funding]) {
+    assert.match(surface, new RegExp(escapedSupportUrl));
+  }
+  assert.match(support, /Support is voluntary/);
+  assert.match(support, /does not unlock features/);
+  assert.match(support, /commercial[\s\S]+use is prohibited/i);
+  assert.match(privacy, /only after\s+the user activates the link/);
+  assert.match(privacy, /does not send page text, note text, browsing\s+activity, settings/);
 });

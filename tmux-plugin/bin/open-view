@@ -8,7 +8,7 @@ plugin_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 case "$source_pane" in
   %*) ;;
   *)
-    tmux display-message "Kalima: could not identify the source pane"
+    tmux display-message "GlanceVeil: could not identify the source pane"
     exit 1
     ;;
 esac
@@ -24,26 +24,26 @@ option_or_default() {
   fi
 }
 
-pack=$(option_or_default @kalima-pack greek)
-profile=$(option_or_default @kalima-profile dense)
-clear_words=$(option_or_default @kalima-clear-words 0)
-refresh_ms=$(option_or_default @kalima-refresh-ms 250)
-variation_seed=$(option_or_default @kalima-variation-seed 0)
+pack=$(option_or_default @glanceveil-pack greek)
+profile=$(option_or_default @glanceveil-profile dense)
+clear_words=$(option_or_default @glanceveil-clear-words 0)
+refresh_ms=$(option_or_default @glanceveil-refresh-ms 250)
+variation_seed=$(option_or_default @glanceveil-variation-seed 0)
 
 if ! command -v node >/dev/null 2>&1; then
-  tmux display-message "Kalima requires Node.js"
+  tmux display-message "GlanceVeil requires Node.js"
   exit 1
 fi
 
-view_command="'$(printf '%s' "$plugin_dir/bin/kalima-view" | sed "s/'/'\\\\''/g")'"
-tmux display-message "Kalima interactive view: press Ctrl-G twice to reveal the original"
+view_command="'$(printf '%s' "$plugin_dir/bin/glanceveil-view" | sed "s/'/'\\\\''/g")'"
+tmux display-message "GlanceVeil interactive view: press Ctrl-G twice to reveal the original"
 tmux new-window \
   -t "${target_session}:" \
-  -n "Kaλima" \
-  -e "KALIMA_SOURCE_PANE=$source_pane" \
-  -e "KALIMA_PACK=$pack" \
-  -e "KALIMA_PROFILE=$profile" \
-  -e "KALIMA_CLEAR_WORDS=$clear_words" \
-  -e "KALIMA_REFRESH_MS=$refresh_ms" \
-  -e "KALIMA_VARIATION_SEED=$variation_seed" \
+  -n "GlanceVeil" \
+  -e "GLANCEVEIL_SOURCE_PANE=$source_pane" \
+  -e "GLANCEVEIL_PACK=$pack" \
+  -e "GLANCEVEIL_PROFILE=$profile" \
+  -e "GLANCEVEIL_CLEAR_WORDS=$clear_words" \
+  -e "GLANCEVEIL_REFRESH_MS=$refresh_ms" \
+  -e "GLANCEVEIL_VARIATION_SEED=$variation_seed" \
   "$view_command"

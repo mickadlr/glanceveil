@@ -88,7 +88,7 @@ button {
 }
 
 button:hover { border-color: #aa98d2; background: var(--surface); }
-button:focus-visible, select:focus-visible, summary:focus-visible {
+button:focus-visible, select:focus-visible, summary:focus-visible, .support-link:focus-visible {
   outline: 3px solid rgba(94,63,176,.28);
   outline-offset: 2px;
 }
@@ -156,6 +156,24 @@ footer {
   padding: 10px 18px 14px;
   color: var(--muted);
   font-size: 10px;
+}
+
+.footer-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+}
+
+.support-link {
+  padding: 4px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.support-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 kbd {

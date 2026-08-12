@@ -115,10 +115,25 @@ async function activeTab() {
   return tab;
 }
 
+async function pageUrlForTab(tabId, knownUrl = "") {
+  if (State.isSupportedUrl(knownUrl)) return knownUrl;
+  try {
+    const context = await chrome.tabs.sendMessage(
+      tabId,
+      { type: "gv-get-page-context" },
+      { frameId: 0 }
+    );
+    return State.isSupportedUrl(context?.url) ? context.url : "";
+  } catch {
+    return "";
+  }
+}
+
 async function notifyTab(tabId) {
   try {
     const tab = await chrome.tabs.get(tabId);
-    const resolved = await resolveForTab(tabId, tab.url || "");
+    const url = await pageUrlForTab(tabId, tab.url || "");
+    const resolved = await resolveForTab(tabId, url);
     await updateBadge(tabId, resolved);
     await chrome.tabs.sendMessage(tabId, { type: "gv-apply-state", payload: resolved });
   } catch {
@@ -134,9 +149,9 @@ async function updateBadge(tabId, resolved) {
   if (text) await chrome.action.setBadgeBackgroundColor({ tabId, color });
   await chrome.action.setTitle({
     tabId,
-    title: !state.supported ? "Kalima is unavailable on this page" :
+    title: !state.supported ? "GlanceVeil is unavailable on this page" :
       state.enabled ? `${resolved.pack.name} veil is active (${state.scope})` :
-        `Kalima is off (${state.scope})`
+        `GlanceVeil is off (${state.scope})`
   });
 }
 
@@ -189,7 +204,8 @@ async function handleMessage(message, sender) {
 
   if (type === "gv-get-state") {
     if (!tab?.id) throw new Error("No browser tab is associated with this request.");
-    const result = await resolveForTab(tab.id, tab.url || message.url || "");
+    const url = await pageUrlForTab(tab.id, tab.url || message.url || "");
+    const result = await resolveForTab(tab.id, url);
     await updateBadge(tab.id, result);
     return result;
   }
@@ -206,7 +222,7 @@ async function handleMessage(message, sender) {
   }
 
   if (!tab?.id) throw new Error("No active tab is available.");
-  const url = tab.url || message.url || "";
+  const url = await pageUrlForTab(tab.id, tab.url || message.url || "");
 
   switch (type) {
     case "gv-toggle-tab": {
@@ -244,7 +260,7 @@ async function handleMessage(message, sender) {
       await removeSiteRule(tab.id, url);
       return finishTabMutation(tab, url);
     default:
-      throw new Error(`Unknown Kalima message: ${String(type)}`);
+      throw new Error(`Unknown GlanceVeil message: ${String(type)}`);
   }
 }
 

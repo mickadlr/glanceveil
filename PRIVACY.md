@@ -1,14 +1,14 @@
-# Kalima privacy policy
+# GlanceVeil privacy policy
 
-Effective: 10 August 2026
+Effective: 12 August 2026
 
-Kalima is a local visual-obscurity tool for webpages, Obsidian notes, and tmux
+GlanceVeil is a local visual-obscurity tool for webpages, Obsidian notes, and tmux
 panes. It does not operate a network service, include advertising or analytics,
 or send user data to the developer or any third party.
 
-## Data Kalima processes
+## Data GlanceVeil processes
 
-Kalima processes text locally only to produce its visible veil:
+GlanceVeil processes text locally only to produce its visible veil:
 
 - The browser extension reads eligible text displayed by webpages. If input
   veiling is enabled, it also reads the current local value of supported text
@@ -20,7 +20,7 @@ Kalima processes text locally only to produce its visible veil:
   and forwards keyboard bytes to that pane while its interactive view is open.
 
 This processing can involve website content, user-generated content, personal
-communications, and form data. It happens on the user's device. Kalima does
+communications, and form data. It happens on the user's device. GlanceVeil does
 not collect, transmit, sell, share, or permit the developer or another person
 to read that content. Password controls are excluded.
 
@@ -34,29 +34,35 @@ it. Page text, transformed text, complete visited URLs, browsing history, and
 usage telemetry are not stored.
 
 The Obsidian plugin stores only its settings through Obsidian's plugin-data
-API. The tmux setup wizard stores only Kalima options in the user's selected
-configuration file, normally `~/.config/kalima/tmux.conf`, and may retain one
+API. The tmux setup wizard stores only GlanceVeil options in the user's selected
+configuration file, normally `~/.config/glanceveil/tmux.conf`, and may retain one
 local backup when settings are changed.
 
-These records remain on the user's device until the user resets Kalima, removes
+These records remain on the user's device until the user resets GlanceVeil, removes
 the relevant files, or the host platform removes them. Platform backup or sync
 features configured by the user may copy local settings under that platform's
-own terms; Kalima does not initiate such copying.
+own terms; GlanceVeil does not initiate such copying.
 
 ## Network access and sharing
 
-Kalima makes no network requests and has no developer-operated backend. It does
-not share data with the developer, advertisers, analytics providers, data
-brokers, or other third parties. Website scripts, other extensions, Obsidian,
-tmux, the operating system, and synchronization services remain outside
-Kalima's control and are governed by their own privacy practices.
+GlanceVeil makes no background network requests and has no developer-operated
+backend. It does not share data with the developer, advertisers, analytics
+providers, data brokers, or other third parties.
 
-Kalima's use of information received from Google APIs will adhere to the Chrome
+The browser popup, browser settings page, and Obsidian settings contain an
+optional link to GlanceVeil's Ko-fi support page. GlanceVeil opens that page only after
+the user activates the link. It does not send page text, note text, browsing
+activity, settings, or other GlanceVeil data to Ko-fi. The resulting webpage is
+governed by Ko-fi's own privacy practices. Website scripts, other extensions,
+Obsidian, tmux, the operating system, and synchronization services also remain
+outside GlanceVeil's control and are governed by their own privacy practices.
+
+GlanceVeil's use of information received from Google APIs will adhere to the Chrome
 Web Store User Data Policy, including the Limited Use requirements.
 
 ## User controls
 
-Browser users can disable Kalima globally or for a tab or site, remove saved
+Browser users can disable GlanceVeil globally or for a tab or site, remove saved
 site rules, export or reset settings, and disable input veiling. Obsidian users
 can disable either editor or Reading-view coverage and can remove the plugin's
 local data. tmux users can close the interactive view and delete its dedicated
@@ -64,7 +70,7 @@ configuration file.
 
 ## Security and reports
 
-Kalima is visual obscurity, not encryption. Its threat model and limitations
+GlanceVeil is visual obscurity, not encryption. Its threat model and limitations
 are documented in the project README. Report a privacy or security issue using
 the private process in [SECURITY.md](SECURITY.md); do not include private page,
 note, form, or terminal content in a public report.

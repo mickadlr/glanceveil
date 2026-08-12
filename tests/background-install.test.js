@@ -13,10 +13,14 @@ const backgroundSource = fs.readFileSync(
   "utf8"
 );
 
-function loadBackground(initialStorage = {}) {
+function loadBackground(initialStorage = {}, tabUrl = "https://web.whatsapp.com/") {
   const localStorage = structuredClone(initialStorage);
   let installedListener = null;
+  let messageListener = null;
+  let storageChangedListener = null;
   let optionsOpenCount = 0;
+  const appliedStates = [];
+  const pageContextRequests = [];
 
   const inertEvent = { addListener() {} };
   const chrome = {
@@ -32,7 +36,11 @@ function loadBackground(initialStorage = {}) {
           installedListener = listener;
         }
       },
-      onMessage: inertEvent,
+      onMessage: {
+        addListener(listener) {
+          messageListener = listener;
+        }
+      },
       onStartup: inertEvent,
       async openOptionsPage() {
         optionsOpenCount += 1;
@@ -53,12 +61,30 @@ function loadBackground(initialStorage = {}) {
         },
         async set() {}
       },
-      onChanged: inertEvent
+      onChanged: {
+        addListener(listener) {
+          storageChangedListener = listener;
+        }
+      }
     },
     tabs: {
       onRemoved: inertEvent,
       async query() {
-        return [];
+        return [{ id: 17 }];
+      },
+      async get(tabId) {
+        return { id: tabId };
+      },
+      async sendMessage(tabId, message, options) {
+        if (message.type === "gv-get-page-context") {
+          pageContextRequests.push({ tabId, options });
+          return { url: tabUrl };
+        }
+        if (message.type === "gv-apply-state") {
+          appliedStates.push(message.payload);
+          return undefined;
+        }
+        return undefined;
       }
     }
   };
@@ -77,7 +103,22 @@ function loadBackground(initialStorage = {}) {
       assert.ok(installedListener, "onInstalled listener was registered");
       installedListener(details);
     },
+    message(message, sender = {}) {
+      assert.ok(messageListener, "runtime message listener was registered");
+      return new Promise((resolve) => {
+        messageListener(message, sender, resolve);
+      }).then((response) => {
+        assert.equal(response.ok, true, response.error);
+        return response.value;
+      });
+    },
+    settingsChanged() {
+      assert.ok(storageChangedListener, "storage change listener was registered");
+      storageChangedListener({ [State.SETTINGS_KEY]: { newValue: localStorage[State.SETTINGS_KEY] } }, "local");
+    },
     localStorage,
+    appliedStates,
+    pageContextRequests,
     get optionsOpenCount() {
       return optionsOpenCount;
     }
@@ -120,4 +161,33 @@ test("updates never open first-run setup", async () => {
   await settleInstall();
 
   assert.equal(extension.optionsOpenCount, 0);
+});
+
+test("popup state uses the top-frame page URL when tabs.get omits url", async () => {
+  const extension = loadBackground({
+    [State.SETTINGS_KEY]: State.sanitizeSettings({ enabled: true, onboardingComplete: true })
+  });
+
+  const state = await extension.message({ type: "gv-get-state", tabId: 17 });
+
+  assert.equal(state.effective.supported, true);
+  assert.equal(state.effective.enabled, true);
+  assert.equal(state.effective.origin, "https://web.whatsapp.com");
+  assert.equal(extension.pageContextRequests.length, 1);
+  assert.equal(extension.pageContextRequests[0].tabId, 17);
+  assert.equal(extension.pageContextRequests[0].options.frameId, 0);
+});
+
+test("settings broadcasts never overwrite a supported page with an empty-url state", async () => {
+  const extension = loadBackground({
+    [State.SETTINGS_KEY]: State.sanitizeSettings({ enabled: true, onboardingComplete: true })
+  });
+
+  extension.settingsChanged();
+  await settleInstall();
+
+  assert.equal(extension.appliedStates.length, 1);
+  assert.equal(extension.appliedStates[0].effective.supported, true);
+  assert.equal(extension.appliedStates[0].effective.enabled, true);
+  assert.equal(extension.appliedStates[0].effective.origin, "https://web.whatsapp.com");
 });

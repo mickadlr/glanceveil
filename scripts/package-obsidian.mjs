@@ -9,8 +9,8 @@ const sourceManifest = path.join(root, "manifest.json");
 const sourceStyles = path.join(root, "obsidian-plugin", "styles.css");
 
 const manifest = JSON.parse(await readFile(sourceManifest, "utf8"));
-if (manifest.id !== "kalima") {
-  throw new Error(`Expected manifest id "kalima", received ${JSON.stringify(manifest.id)}`);
+if (manifest.id !== "glanceveil") {
+  throw new Error(`Expected manifest id "glanceveil", received ${JSON.stringify(manifest.id)}`);
 }
 if (!/^\d+\.\d+\.\d+$/.test(manifest.version || "")) {
   throw new Error(`Invalid release version ${JSON.stringify(manifest.version)}`);
@@ -46,4 +46,4 @@ if (JSON.stringify(packagedFiles) !== JSON.stringify(expectedFiles)) {
   throw new Error(`Unexpected Obsidian package contents: ${packagedFiles.join(", ")}`);
 }
 
-console.log(`Packaged Kalima ${manifest.version} for Obsidian in dist/obsidian`);
+console.log(`Packaged GlanceVeil ${manifest.version} for Obsidian in dist/obsidian`);

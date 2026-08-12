@@ -13,13 +13,13 @@ import {
 } from "./reading-renderer";
 import {
   DEFAULT_SETTINGS,
-  KalimaSettingTab,
+  GlanceVeilSettingTab,
   type ObsidianVeilSettings,
   sanitizeSettings,
   type VeilSettingsHost
 } from "./settings";
 
-export default class KalimaPlugin extends Plugin
+export default class GlanceVeilPlugin extends Plugin
   implements VeilSettingsHost, ReadingVeilHost {
   settings: ObsidianVeilSettings = { ...DEFAULT_SETTINGS };
   readonly sessionSeed = Math.floor(Math.random() * 0x7fffffff);
@@ -67,7 +67,7 @@ export default class KalimaPlugin extends Plugin
           packId: next.id,
           profileId: next.defaultProfile,
           renderer: next.defaultRenderer
-        }).then(() => new Notice(`Kalima: ${next.name}`));
+        }).then(() => new Notice(`GlanceVeil: ${next.name}`));
       }
     });
 
@@ -87,9 +87,9 @@ export default class KalimaPlugin extends Plugin
       }
     });
 
-    this.addSettingTab(new KalimaSettingTab(this.app, this));
+    this.addSettingTab(new GlanceVeilSettingTab(this.app, this));
 
-    this.ribbonEl = this.addRibbonIcon("eye-off", "Toggle Kalima veil", () => {
+    this.ribbonEl = this.addRibbonIcon("eye-off", "Toggle GlanceVeil veil", () => {
       void this.updateSettings({ enabled: !this.settings.enabled });
     });
     this.ribbonEl.addClass("gv-obsidian-ribbon");
@@ -151,7 +151,7 @@ export default class KalimaPlugin extends Plugin
   }
 
   private updateControls(): void {
-    const action = this.settings.enabled ? "Disable Kalima" : "Enable Kalima";
+    const action = this.settings.enabled ? "Disable GlanceVeil" : "Enable GlanceVeil";
     if (this.ribbonEl) {
       this.ribbonEl.toggleClass("gv-obsidian-ribbon-off", !this.settings.enabled);
       this.ribbonEl.setAttribute("aria-label", action);
@@ -162,7 +162,7 @@ export default class KalimaPlugin extends Plugin
     const pack = Core.getPack(this.settings.packId);
     this.statusBarEl.toggleClass("gv-obsidian-status-hidden", !this.settings.showStatusBar);
     this.statusBarEl.toggleClass("gv-obsidian-status-off", !this.settings.enabled);
-    this.statusBarEl.setText(this.settings.enabled ? `Kaλima · ${pack.name}` : "Kaλima · off");
+    this.statusBarEl.setText(this.settings.enabled ? `GlanceVeil · ${pack.name}` : "GlanceVeil · off");
     this.statusBarEl.setAttribute("aria-label", action);
   }
 }

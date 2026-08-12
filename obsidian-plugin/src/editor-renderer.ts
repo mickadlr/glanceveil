@@ -180,7 +180,7 @@ export function createEditorExtension(
   settings: ObsidianVeilSettings,
   sessionSeed: number
 ): Extension {
-  class KalimaEditorPlugin implements PluginValue {
+  class GlanceVeilEditorPlugin implements PluginValue {
     decorations: DecorationSet;
 
     constructor(view: EditorView) {
@@ -195,7 +195,7 @@ export function createEditorExtension(
   }
 
   return [
-    ViewPlugin.fromClass(KalimaEditorPlugin, {
+    ViewPlugin.fromClass(GlanceVeilEditorPlugin, {
       decorations: (plugin) => plugin.decorations
     }),
     EditorView.theme({

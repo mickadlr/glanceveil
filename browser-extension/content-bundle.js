@@ -338,7 +338,7 @@
       id: "cyrillic",
       name: "Cyrillic",
       script: "Cyrillic",
-      maturity: "beta",
+      maturity: "production",
       description: "Phonetic Cyrillic-looking substitutions.",
       renderers: ["unicode", "overlay"],
       defaultRenderer: "unicode",
@@ -1189,8 +1189,8 @@
   if (!Core?.transform || !Core?.getPack || !State?.migrateSettings ||
       !State?.resolveEffectiveState) {
     console.error(
-      "[Kalima] The shared runtime did not initialize. " +
-      "The page was left unchanged; reload Kalima and then reload this tab."
+      "[GlanceVeil] The shared runtime did not initialize. " +
+      "The page was left unchanged; reload GlanceVeil and then reload this tab."
     );
     return;
   }
@@ -1208,8 +1208,8 @@
   const TEXT_INPUT_TYPES = new Set(["text", "search", "email", "url", "tel"]);
   const SHADOW_AUDIT_INTERVAL_MS = 30_000;
   const SHADOW_AUDIT_SLICE_SIZE = 300;
-  const GOOGLE_DOCS_STATE_CHANNEL = "kalima-google-docs-state-v1";
-  const GOOGLE_DOCS_STATUS_CHANNEL = "kalima-google-docs-status-v1";
+  const GOOGLE_DOCS_STATE_CHANNEL = "glanceveil-google-docs-state-v1";
+  const GOOGLE_DOCS_STATUS_CHANNEL = "glanceveil-google-docs-status-v1";
   const INPUT_MIRROR_PROPERTIES = [
     "font-family", "font-size", "font-style", "font-weight", "font-stretch",
     "font-variant", "letter-spacing", "line-height", "opacity", "text-align", "text-indent",
@@ -2226,10 +2226,10 @@
     if (!pill) return;
     const enabled = veilActive();
     pill.className = revealElement ? "reveal" : enabled ? "" : "off";
-    pill.textContent = googleDocsStatus?.reloadRequired ? "KALIMA · RELOAD DOCS" :
-      revealElement ? "KALIMA · PEEK" :
-      automationReasons.size ? `KALIMA · AUTO ${currentPack?.name || ""}` :
-        enabled ? `KALIMA · ${currentPack?.name || ""}` : "KALIMA · OFF";
+    pill.textContent = googleDocsStatus?.reloadRequired ? "GLANCEVEIL · RELOAD DOCS" :
+      revealElement ? "GLANCEVEIL · PEEK" :
+      automationReasons.size ? `GLANCEVEIL · AUTO ${currentPack?.name || ""}` :
+        enabled ? `GLANCEVEIL · ${currentPack?.name || ""}` : "GLANCEVEIL · OFF";
   }
 
   function setAutomationReason(reason, enabled) {
@@ -2469,7 +2469,10 @@
   });
 
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message?.type === "gv-apply-state") applyResolved(message.payload);
+    if (message?.type === "gv-get-page-context" && isTopFrame) {
+      sendResponse({ url: location.href });
+    }
+    else if (message?.type === "gv-apply-state") applyResolved(message.payload);
     else if (message?.type === "gv-peek-selection") {
       const selected = selectedBlock();
       if (selected) {

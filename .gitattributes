@@ -7,6 +7,6 @@
 *.zip binary
 *.gz binary
 
-kalima.tmux text eol=lf
+glanceveil.tmux text eol=lf
 tmux-plugin/*.tmux text eol=lf
 tmux-plugin/bin/* text eol=lf

@@ -1,6 +1,6 @@
 # Chrome Web Store submission material
 
-This directory contains the copy and artwork prepared for the Kalima Chrome Web
+This directory contains the copy and artwork prepared for the GlanceVeil Chrome Web
 Store dashboard. Upload the packaged extension from `dist/chrome`, not this
 directory.
 
@@ -13,5 +13,5 @@ directory.
 - `source` contains the editable SVG masters used to render the PNG files.
 
 The public privacy-policy URL is intended to be
-`https://github.com/mickadlr/kalima/blob/main/PRIVACY.md` after the repository is
+`https://github.com/mickadlr/glanceveil/blob/main/PRIVACY.md` after the repository is
 made public. Do not submit the store item while that URL is private.

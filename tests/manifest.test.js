@@ -23,25 +23,37 @@ test("manifest references only existing local runtime files", () => {
   }
 });
 
-test("extension presents the Kalima identity and a complete local icon set", () => {
-  assert.equal(manifest.name, "Kalima");
-  assert.equal(manifest.action.default_title, "Kalima");
+test("extension presents the GlanceVeil identity and a complete local icon set", () => {
+  assert.equal(manifest.name, "GlanceVeil");
+  assert.equal(manifest.action.default_title, "GlanceVeil");
   assert.deepEqual(Object.keys(manifest.icons).sort(), ["128", "16", "32", "48"]);
 
   const popup = fs.readFileSync(path.join(extensionRoot, "popup.html"), "utf8");
   const options = fs.readFileSync(path.join(extensionRoot, "options.html"), "utf8");
-  assert.match(popup, /aria-label="Kalima">Ka<span aria-hidden="true">λ<\/span>ima/);
-  assert.match(options, /aria-label="Kalima">Ka<span aria-hidden="true">λ<\/span>ima/);
+  assert.match(popup, /<h1>Glance<span>Veil<\/span><\/h1>/);
+  assert.match(options, /<span class="wordmark">Glance<span>Veil<\/span><\/span> settings/);
   assert.match(options, /id="onboarding"/);
   assert.match(options, /Only sites I explicitly enable/);
   assert.doesNotMatch(options, /Reduce visual transitions/);
+  assert.match(
+    popup,
+    /href="https:\/\/ko-fi\.com\/mickadlr"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/
+  );
+  assert.match(popup, />Support<\/a>/);
+  assert.match(
+    options,
+    /href="https:\/\/ko-fi\.com\/mickadlr"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/
+  );
+  assert.match(options, /class="settings-support"/);
 });
 
 test("extension pages use external local scripts under the default MV3 CSP", () => {
   for (const name of ["popup.html", "options.html"]) {
     const html = fs.readFileSync(path.join(extensionRoot, name), "utf8");
     assert.doesNotMatch(html, /<script(?![^>]*\bsrc=)[^>]*>/i, name);
-    assert.doesNotMatch(html, /https?:\/\//i, name);
+    for (const source of html.matchAll(/<script[^>]*\bsrc=["']([^"']+)/gi)) {
+      assert.doesNotMatch(source[1], /^https?:\/\//i, name);
+    }
   }
 });
 
@@ -101,7 +113,7 @@ test("fresh installs open the local calibration flow", () => {
   assert.match(background, /chrome\.runtime\.openOptionsPage\(\)/);
   assert.match(background, /typeof stored\.enabled === "boolean"/);
   assert.match(options, /id="onboardingSample"[^>]*tabindex="0"/);
-  assert.match(options, /Start using Kalima/);
+  assert.match(options, /Start using GlanceVeil/);
   assert.match(optionsScript, /onboardingComplete: true/);
   assert.match(optionsScript, /document\.body\.classList\.toggle\("setup-active", visible\)/);
   assert.match(optionsScript, /revealOnboardingSample/);
@@ -110,6 +122,7 @@ test("fresh installs open the local calibration flow", () => {
   assert.match(optionsStyles, /\.setup-active main > section:not\(\.onboarding\)/);
   assert.match(optionsStyles, /\.sample-overlay-part::after/);
   assert.match(optionsStyles, /unicode-bidi: isolate-override/);
+  assert.match(optionsStyles, /\.settings-support\s*\{/);
 });
 
 test("appearance changes activate the tab and Google Docs mutations repaint", () => {

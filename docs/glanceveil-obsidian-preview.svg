@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
-  <title id="title">Kalima Obsidian preview</title>
+  <title id="title">GlanceVeil Obsidian preview</title>
   <desc id="desc">A note excerpt shown first as ordinary Latin text and then veiled with Greek-looking glyphs.</desc>
   <defs>
     <linearGradient id="background" x1="0" x2="1" y1="0" y2="1">
@@ -13,7 +13,7 @@
   <rect width="1200" height="520" rx="36" fill="url(#background)"/>
   <circle cx="1110" cy="82" r="170" fill="#7c5cff" opacity=".12"/>
   <circle cx="80" cy="490" r="210" fill="#bc8cff" opacity=".08"/>
-  <text x="72" y="84" fill="#c9b7ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="700" letter-spacing="3">KALIMA FOR OBSIDIAN</text>
+  <text x="72" y="84" fill="#c9b7ff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="700" letter-spacing="3">GLANCEVEIL FOR OBSIDIAN</text>
   <text x="72" y="132" fill="#f4efff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="620">Your Markdown stays unchanged.</text>
   <g filter="url(#shadow)">
     <rect x="72" y="174" width="1056" height="268" rx="24" fill="#211b2d" stroke="#57466f"/>

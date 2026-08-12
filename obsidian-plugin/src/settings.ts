@@ -2,6 +2,8 @@ import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
 import * as Core from "../../browser-extension/shared/core";
 import type { VeilPack } from "../../browser-extension/shared/core";
 
+const SUPPORT_URL = "https://ko-fi.com/mickadlr";
+
 export type VeilRenderer = "overlay" | "unicode" | "strokes";
 
 export interface ObsidianVeilSettings {
@@ -94,7 +96,7 @@ function addRendererOptions(
   for (const renderer of pack.renderers) dropdown.addOption(renderer, labels[renderer] || renderer);
 }
 
-export class KalimaSettingTab extends PluginSettingTab {
+export class GlanceVeilSettingTab extends PluginSettingTab {
   private readonly host: VeilSettingsHost;
 
   constructor(app: App, host: VeilSettingsHost) {
@@ -206,5 +208,15 @@ export class KalimaSettingTab extends PluginSettingTab {
       .addToggle((toggle) => toggle
         .setValue(settings.showStatusBar)
         .onChange((value) => this.host.updateSettings({ showStatusBar: value })));
+
+    const support = new Setting(containerEl)
+      .setName("Support GlanceVeil")
+      .setDesc("Optional. Tips do not unlock features or grant commercial-use rights.");
+    const supportLink = support.controlEl.createEl("a", {
+      text: "Open Ko-fi",
+      href: SUPPORT_URL
+    });
+    supportLink.setAttr("target", "_blank");
+    supportLink.setAttr("rel", "noopener noreferrer");
   }
 }

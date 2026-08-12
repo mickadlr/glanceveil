@@ -16,10 +16,10 @@ const {
 } = require("../tmux-plugin/lib/terminal.js");
 
 const projectRoot = path.resolve(__dirname, "..");
-const filterPath = path.join(projectRoot, "tmux-plugin/bin/kalima-filter");
-const pluginPath = path.join(projectRoot, "tmux-plugin/kalima.tmux");
+const filterPath = path.join(projectRoot, "tmux-plugin/bin/glanceveil-filter");
+const pluginPath = path.join(projectRoot, "tmux-plugin/glanceveil.tmux");
 const openViewPath = path.join(projectRoot, "tmux-plugin/bin/open-view");
-const setupPath = path.join(projectRoot, "tmux-plugin/bin/kalima-setup");
+const setupPath = path.join(projectRoot, "tmux-plugin/bin/glanceveil-setup");
 
 function shellQuote(value) {
   return `'${String(value).replaceAll("'", "'\\''")}'`;
@@ -81,7 +81,7 @@ test("tmux refresh settings are bounded and transformed lines fit the view", () 
   );
 });
 
-test("kalima-filter transforms stdin and keeps ANSI intact", () => {
+test("glanceveil-filter transforms stdin and keeps ANSI intact", () => {
   const result = spawnSync(
     process.execPath,
     [filterPath, "--pack", "greek", "--profile", "dense"],
@@ -103,7 +103,7 @@ test("tmux plugin files are executable", () => {
 const tmuxAvailable = spawnSync("tmux", ["-V"], { encoding: "utf8" }).status === 0;
 
 test("tmux setup writes bounded persistent settings and preserves a backup", () => {
-  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "kalima-setup-test-"));
+  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "glanceveil-setup-test-"));
   const configPath = path.join(temporaryDirectory, "tmux.conf");
   try {
     let result = spawnSync(
@@ -122,10 +122,10 @@ test("tmux setup writes bounded persistent settings and preserves a backup", () 
     );
     assert.equal(result.status, 0, result.stderr);
     let settings = fs.readFileSync(configPath, "utf8");
-    assert.match(settings, /^# Kalima tmux settings v1/);
-    assert.match(settings, /@kalima-pack cyrillic/);
-    assert.match(settings, /@kalima-profile fluent/);
-    assert.match(settings, /@kalima-clear-words 0.2/);
+    assert.match(settings, /^# GlanceVeil tmux settings v1/);
+    assert.match(settings, /@glanceveil-pack cyrillic/);
+    assert.match(settings, /@glanceveil-profile fluent/);
+    assert.match(settings, /@glanceveil-clear-words 0.2/);
     assert.equal(fs.statSync(configPath).mode & 0o777, 0o600);
 
     result = spawnSync(
@@ -141,8 +141,8 @@ test("tmux setup writes bounded persistent settings and preserves a backup", () 
     );
     assert.equal(result.status, 0, result.stderr);
     settings = fs.readFileSync(configPath, "utf8");
-    assert.match(settings, /@kalima-profile dense/);
-    assert.match(fs.readFileSync(`${configPath}.bak`, "utf8"), /@kalima-profile fluent/);
+    assert.match(settings, /@glanceveil-profile dense/);
+    assert.match(fs.readFileSync(`${configPath}.bak`, "utf8"), /@glanceveil-profile fluent/);
 
     result = spawnSync(
       process.execPath,
@@ -165,8 +165,8 @@ test("tmux setup writes bounded persistent settings and preserves a backup", () 
 test("tmux plugin routes first use to setup and loads saved settings", {
   skip: tmuxAvailable ? false : "tmux is not installed"
 }, () => {
-  const socket = `kalima-first-run-${process.pid}-${Date.now()}`;
-  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "kalima-first-run-"));
+  const socket = `glanceveil-first-run-${process.pid}-${Date.now()}`;
+  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "glanceveil-first-run-"));
   const configPath = path.join(temporaryDirectory, "tmux.conf");
   try {
     let result = runTmux(socket, [
@@ -174,7 +174,7 @@ test("tmux plugin routes first use to setup and loads saved settings", {
     ], { cleanConfig: true });
     assert.equal(result.status, 0, result.stderr);
     result = runTmux(socket, [
-      "set-environment", "-g", "KALIMA_TMUX_CONFIG", configPath
+      "set-environment", "-g", "GLANCEVEIL_TMUX_CONFIG", configPath
     ]);
     assert.equal(result.status, 0, result.stderr);
     result = runTmux(socket, ["run-shell", shellQuote(pluginPath)]);
@@ -203,11 +203,11 @@ test("tmux plugin routes first use to setup and loads saved settings", {
     assert.equal(binding.status, 0, binding.stderr);
     assert.match(binding.stdout, /open-view/);
     assert.equal(
-      runTmux(socket, ["show-options", "-gqv", "@kalima-profile"]).stdout.trim(),
+      runTmux(socket, ["show-options", "-gqv", "@glanceveil-profile"]).stdout.trim(),
       "familiar"
     );
     assert.equal(
-      runTmux(socket, ["show-options", "-gqv", "@kalima-clear-words"]).stdout.trim(),
+      runTmux(socket, ["show-options", "-gqv", "@glanceveil-clear-words"]).stdout.trim(),
       "0.1"
     );
   } finally {
@@ -219,9 +219,9 @@ test("tmux plugin routes first use to setup and loads saved settings", {
 test("tmux plugin opens, interacts with, and closes an isolated veiled window", {
   skip: tmuxAvailable ? false : "tmux is not installed"
 }, async () => {
-  const socket = `kalima-test-${process.pid}-${Date.now()}`;
-  const sessionName = "kalima-test";
-  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "kalima-view-test-"));
+  const socket = `glanceveil-test-${process.pid}-${Date.now()}`;
+  const sessionName = "glanceveil-test";
+  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "glanceveil-view-test-"));
   const configPath = path.join(temporaryDirectory, "tmux.conf");
   try {
     let setup = spawnSync(
@@ -244,7 +244,7 @@ test("tmux plugin opens, interacts with, and closes an isolated veiled window", 
     ], { cleanConfig: true });
     assert.equal(result.status, 0, result.stderr);
     result = runTmux(socket, [
-      "set-environment", "-g", "KALIMA_TMUX_CONFIG", configPath
+      "set-environment", "-g", "GLANCEVEIL_TMUX_CONFIG", configPath
     ]);
     assert.equal(result.status, 0, result.stderr);
 
@@ -269,13 +269,13 @@ test("tmux plugin opens, interacts with, and closes an isolated veiled window", 
       "list-windows", "-t", sessionName, "-F", "#{window_name}:#{window_id}"
     ]);
     assert.equal(windows.status, 0, windows.stderr);
-    const kalimaWindow = windows.stdout
+    const glanceveilWindow = windows.stdout
       .trim()
       .split("\n")
-      .find((line) => line.startsWith("Kaλima:"));
-    assert.ok(kalimaWindow, windows.stdout);
+      .find((line) => line.startsWith("GlanceVeil:"));
+    assert.ok(glanceveilWindow, windows.stdout);
 
-    const windowId = kalimaWindow.slice(kalimaWindow.indexOf(":") + 1);
+    const windowId = glanceveilWindow.slice(glanceveilWindow.indexOf(":") + 1);
     const view = runTmux(socket, ["capture-pane", "-p", "-t", windowId]);
     assert.equal(view.status, 0, view.stderr);
     assert.ok(
@@ -319,7 +319,7 @@ test("tmux plugin opens, interacts with, and closes an isolated veiled window", 
       "list-windows", "-t", sessionName, "-F", "#{window_name}"
     ]);
     assert.equal(remaining.status, 0, remaining.stderr);
-    assert.doesNotMatch(remaining.stdout, /Kaλima/);
+    assert.doesNotMatch(remaining.stdout, /GlanceVeil/);
   } finally {
     runTmux(socket, ["kill-server"]);
     fs.rmSync(temporaryDirectory, { recursive: true, force: true });

@@ -28,8 +28,8 @@ const runtimeFiles = [
   "assets/icon32.png",
   "assets/icon48.png",
   "assets/icon128.png",
-  "assets/kalima-mark.svg",
-  "assets/kalima-wordmark.svg",
+  "assets/glanceveil-mark.svg",
+  "assets/glanceveil-wordmark.svg",
   "shared/core.js",
   "shared/state.js"
 ];
@@ -54,7 +54,7 @@ async function main() {
   if (process.argv.includes("--verify")) return;
 
   const outputDirectory = path.join(root, "dist", "chrome");
-  const archiveName = `kalima-chrome-${manifest.version}.zip`;
+  const archiveName = `glanceveil-chrome-${manifest.version}.zip`;
   const archivePath = path.join(outputDirectory, archiveName);
   const temporaryPath = `${archivePath}.${process.pid}.tmp`;
   const checksum = createHash("sha256").update(archive).digest("hex");
@@ -66,7 +66,7 @@ async function main() {
     await rm(temporaryPath, { force: true });
   }
   await writeFile(`${archivePath}.sha256`, `${checksum}  ${archiveName}\n`, { mode: 0o644 });
-  console.log(`Packaged Kalima ${manifest.version} for Chrome: ${archivePath}`);
+  console.log(`Packaged GlanceVeil ${manifest.version} for Chrome: ${archivePath}`);
 }
 
 if (path.resolve(process.argv[1] || "") === fileURLToPath(import.meta.url)) await main();

@@ -62,6 +62,7 @@ async function loadPlugin({ isMobile }) {
   const source = fs.readFileSync(bundlePath, "utf8");
   assert.match(source, /id:"arabic"/);
   assert.match(source, /name:"Arabic glyphs"/);
+  assert.match(source, /https:\/\/ko-fi\.com\/mickadlr/);
   vm.runInNewContext(source, {
     console,
     globalThis: {},
@@ -83,8 +84,8 @@ async function loadPlugin({ isMobile }) {
     }
   }, { filename: bundlePath });
 
-  const KalimaPlugin = module.exports.default;
-  const plugin = new KalimaPlugin();
+  const GlanceVeilPlugin = module.exports.default;
+  const plugin = new GlanceVeilPlugin();
   await plugin.onload();
   return { plugin, registrations };
 }

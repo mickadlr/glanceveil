@@ -19,13 +19,12 @@
   <g filter="url(#shadow)">
     <rect x="34" y="36" width="116" height="116" rx="28" fill="#5e3fb0" stroke="#bfaeff" stroke-opacity=".35"/>
     <path d="M48 56C75 40 110 44 139 60L127 139C99 125 74 123 48 137Z" fill="url(#veil)"/>
-    <path d="M64 69v53M66 96l24-27M67 96l26 27" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M101 122l14-47 18 47" fill="none" stroke="#d9ccff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="56" y="121" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="62" font-weight="760" letter-spacing="-5">G</text>
+    <text x="102" y="121" fill="#d9ccff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="60" font-weight="760" letter-spacing="-4">V</text>
   </g>
-  <text x="177" y="92" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="760" letter-spacing="-2.5">Ka</text>
-  <text x="232" y="92" fill="#d9ccff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="50" font-weight="760">λ</text>
-  <text x="263" y="92" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="760" letter-spacing="-2.5">ima</text>
-  <text x="178" y="124" fill="#d9ccff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.7">CASUAL VISUAL PRIVACY</text>
+  <text x="177" y="91" fill="#fff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="35" font-weight="760" letter-spacing="-1.8">Glance</text>
+  <text x="286" y="91" fill="#d9ccff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="35" font-weight="760" letter-spacing="-1.8">Veil</text>
+  <text x="178" y="124" fill="#d9ccff" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="1.35">CASUAL VISUAL PRIVACY</text>
   <g transform="translate(34 184)">
     <rect width="372" height="54" rx="14" fill="#1b132b" stroke="#a990ec" stroke-opacity=".34"/>
     <text x="18" y="23" fill="#a99abd" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">FAMILIAR TEXT, VEILED AT A GLANCE</text>

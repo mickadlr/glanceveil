@@ -14,6 +14,13 @@ test("all bundled packs validate", () => {
   }
 });
 
+test("reviewed alphabetic packs carry their intended maturity", () => {
+  assert.equal(core.getPack("greek").maturity, "production");
+  assert.equal(core.getPack("cyrillic").maturity, "production");
+  assert.equal(core.getPack("hebrew").maturity, "beta");
+  assert.equal(core.getPack("arabic").maturity, "beta");
+});
+
 test("legacy Greek familiar output remains compatible", () => {
   const pack = core.getPack("greek");
   assert.equal(pack.defaultProfile, "dense");

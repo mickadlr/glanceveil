@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Kalima",
+  "name": "GlanceVeil",
   "version": "2.2.1",
   "description": "A familiar-script veil for casual visual privacy while browsing.",
   "icons": {
@@ -29,7 +29,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Kalima",
+    "default_title": "GlanceVeil",
     "default_icon": {
       "16": "assets/icon16.png",
       "32": "assets/icon32.png",
@@ -48,7 +48,7 @@
         "default": "Ctrl+Shift+G",
         "mac": "Command+Shift+G"
       },
-      "description": "Toggle Kalima for the current tab"
+      "description": "Toggle GlanceVeil for the current tab"
     }
   }
 }

@@ -12,8 +12,8 @@ const adapterSource = fs.readFileSync(
   "utf8"
 );
 
-const STATE_CHANNEL = "kalima-google-docs-state-v1";
-const STATUS_CHANNEL = "kalima-google-docs-status-v1";
+const STATE_CHANNEL = "glanceveil-google-docs-state-v1";
+const STATUS_CHANNEL = "glanceveil-google-docs-status-v1";
 
 function createHarness({
   hostname = "docs.google.com",
@@ -175,14 +175,14 @@ test("adapter installs only on Google Docs document pages", () => {
     pathname: "/document/d/example/edit"
   });
   assert.equal(elsewhere.Context.prototype.fillText, elsewhere.nativeFillText);
-  assert.equal(elsewhere.context.__kalimaGoogleDocsAdapterInstalled, undefined);
+  assert.equal(elsewhere.context.__glanceveilGoogleDocsAdapterInstalled, undefined);
 
   const docsHome = createHarness({
     hostname: "docs.google.com",
     pathname: "/spreadsheets/d/example/edit"
   });
   assert.equal(docsHome.Context.prototype.fillText, docsHome.nativeFillText);
-  assert.equal(docsHome.context.__kalimaGoogleDocsAdapterInstalled, undefined);
+  assert.equal(docsHome.context.__glanceveilGoogleDocsAdapterInstalled, undefined);
 });
 
 test("adapter transforms only the Docs document canvas and preserves measurement", async () => {

@@ -6,17 +6,18 @@ import { createTarGzip } from "./lib/release-archive.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const packageMetadata = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
-const archiveRoot = `kalima-tmux-${packageMetadata.version}`;
+const archiveRoot = `glanceveil-tmux-${packageMetadata.version}`;
 
 const releaseFiles = [
-  ["kalima.tmux", "kalima.tmux", 0o100755],
+  ["glanceveil.tmux", "glanceveil.tmux", 0o100755],
   ["tmux-plugin/README.md", "README.md", 0o100644],
+  ["SUPPORT.md", "SUPPORT.md", 0o100644],
   ["LICENSE", "LICENSE", 0o100644],
   ["PRIVACY.md", "PRIVACY.md", 0o100644],
-  ["tmux-plugin/kalima.tmux", "tmux-plugin/kalima.tmux", 0o100755],
-  ["tmux-plugin/bin/kalima-filter", "tmux-plugin/bin/kalima-filter", 0o100755],
-  ["tmux-plugin/bin/kalima-setup", "tmux-plugin/bin/kalima-setup", 0o100755],
-  ["tmux-plugin/bin/kalima-view", "tmux-plugin/bin/kalima-view", 0o100755],
+  ["tmux-plugin/glanceveil.tmux", "tmux-plugin/glanceveil.tmux", 0o100755],
+  ["tmux-plugin/bin/glanceveil-filter", "tmux-plugin/bin/glanceveil-filter", 0o100755],
+  ["tmux-plugin/bin/glanceveil-setup", "tmux-plugin/bin/glanceveil-setup", 0o100755],
+  ["tmux-plugin/bin/glanceveil-view", "tmux-plugin/bin/glanceveil-view", 0o100755],
   ["tmux-plugin/bin/open-setup", "tmux-plugin/bin/open-setup", 0o100755],
   ["tmux-plugin/bin/open-view", "tmux-plugin/bin/open-view", 0o100755],
   ["tmux-plugin/lib/terminal.js", "tmux-plugin/lib/terminal.js", 0o100644],
@@ -51,7 +52,7 @@ async function main() {
     await rm(temporaryPath, { force: true });
   }
   await writeFile(`${archivePath}.sha256`, `${checksum}  ${archiveName}\n`, { mode: 0o644 });
-  console.log(`Packaged Kalima ${packageMetadata.version} for tmux: ${archivePath}`);
+  console.log(`Packaged GlanceVeil ${packageMetadata.version} for tmux: ${archivePath}`);
 }
 
 if (path.resolve(process.argv[1] || "") === fileURLToPath(import.meta.url)) await main();

@@ -2,7 +2,7 @@
 """Build a display-only Greek-look font from a local font that already contains Greek glyphs.
 
 Usage:
-  fontforge -script build-kalima-font.py INPUT_FONT OUTPUT_FONT
+  fontforge -script build-glanceveil-font.py INPUT_FONT OUTPUT_FONT
 
 Use only a font whose license permits modification. The generated font is intended
 for personal display use in applications that let you choose a document font.
@@ -14,14 +14,14 @@ import fontforge
 import psMat
 
 if len(sys.argv) != 3:
-    raise SystemExit("Usage: fontforge -script build-kalima-font.py INPUT_FONT OUTPUT_FONT")
+    raise SystemExit("Usage: fontforge -script build-glanceveil-font.py INPUT_FONT OUTPUT_FONT")
 
 input_path, output_path = sys.argv[1], sys.argv[2]
 font = fontforge.open(input_path)
 
-font.familyname = "Kalima"
-font.fullname = "Kalima Regular"
-font.fontname = "Kalima-Regular"
+font.familyname = "GlanceVeil"
+font.fullname = "GlanceVeil Regular"
+font.fontname = "GlanceVeil-Regular"
 font.version = "1.0"
 font.comment = "Personal display font with Latin slots replaced by Greek-looking glyphs."
 

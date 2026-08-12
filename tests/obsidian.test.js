@@ -10,8 +10,8 @@ const pluginRoot = path.join(root, "obsidian-plugin");
 
 test("Obsidian manifest is mobile-compatible and references a semantic version", () => {
   const manifest = JSON.parse(fs.readFileSync(path.join(root, "manifest.json"), "utf8"));
-  assert.equal(manifest.id, "kalima");
-  assert.equal(manifest.name, "Kalima");
+  assert.equal(manifest.id, "glanceveil");
+  assert.equal(manifest.name, "GlanceVeil");
   assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
   assert.equal(manifest.isDesktopOnly, false);
   assert.ok(manifest.minAppVersion);
