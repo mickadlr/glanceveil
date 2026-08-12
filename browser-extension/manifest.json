@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GlanceVeil",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "A familiar-script veil for casual visual privacy while browsing.",
   "icons": {
     "16": "assets/icon16.png",

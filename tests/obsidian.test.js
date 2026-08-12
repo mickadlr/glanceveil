@@ -15,6 +15,12 @@ test("Obsidian manifest is mobile-compatible and references a semantic version",
   assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
   assert.equal(manifest.isDesktopOnly, false);
   assert.ok(manifest.minAppVersion);
+  assert.equal(manifest.fundingUrl, "https://ko-fi.com/mickadlr");
+});
+
+test("Obsidian support uses the native funding URL instead of an in-plugin link", () => {
+  const settings = fs.readFileSync(path.join(pluginRoot, "src", "settings.ts"), "utf8");
+  assert.doesNotMatch(settings, /ko-fi\.com|Support GlanceVeil|Open Ko-fi/);
 });
 
 test("Obsidian distribution metadata has one canonical copy at repository root", () => {

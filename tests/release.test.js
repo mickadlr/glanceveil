@@ -139,13 +139,13 @@ test("support is voluntary, user-activated, and grants no commercial rights", ()
   const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
   const popup = fs.readFileSync(path.join(root, "browser-extension", "popup.html"), "utf8");
   const options = fs.readFileSync(path.join(root, "browser-extension", "options.html"), "utf8");
-  const obsidian = fs.readFileSync(path.join(root, "obsidian-plugin", "src", "settings.ts"), "utf8");
+  const obsidianManifest = fs.readFileSync(path.join(root, "manifest.json"), "utf8");
   const tmux = fs.readFileSync(path.join(root, "tmux-plugin", "README.md"), "utf8");
   const privacy = fs.readFileSync(path.join(root, "PRIVACY.md"), "utf8");
   const funding = fs.readFileSync(path.join(root, ".github", "FUNDING.yml"), "utf8");
   const escapedSupportUrl = supportUrl.replace(/[./]/g, "\\$&");
 
-  for (const surface of [support, readme, popup, options, obsidian, tmux, funding]) {
+  for (const surface of [support, readme, popup, options, obsidianManifest, tmux, funding]) {
     assert.match(surface, new RegExp(escapedSupportUrl));
   }
   assert.match(support, /Support is voluntary/);

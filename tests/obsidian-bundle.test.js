@@ -62,7 +62,7 @@ async function loadPlugin({ isMobile }) {
   const source = fs.readFileSync(bundlePath, "utf8");
   assert.match(source, /id:"arabic"/);
   assert.match(source, /name:"Arabic glyphs"/);
-  assert.match(source, /https:\/\/ko-fi\.com\/mickadlr/);
+  assert.doesNotMatch(source, /https:\/\/ko-fi\.com\/mickadlr/);
   vm.runInNewContext(source, {
     console,
     globalThis: {},

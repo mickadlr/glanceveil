@@ -1,6 +1,6 @@
 {
   "name": "glanceveil",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "private": true,
   "description": "GlanceVeil, a familiar-script privacy veil for webpages, Obsidian notes, and tmux panes.",
   "license": "SEE LICENSE IN LICENSE",
